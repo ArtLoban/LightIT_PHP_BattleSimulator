@@ -4,11 +4,7 @@ namespace App\Models\Interfaces;
 
 interface UnitInterface
 {
-    public function addUnit();
+    public function calculateAttackProbability(): float;
 
-    public function removeUnit();
-
-    public function makeAttack();
-
-    public function afflictDamage();
+    public function calculateDamage(): float;
 }
