@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Interfaces\CompositeInterface;
-use Services\Factory\SoldierFactory;
 
 class Vehicle extends Unit implements CompositeInterface
 {
@@ -18,17 +17,9 @@ class Vehicle extends Unit implements CompositeInterface
      */
     public $units;
 
-    /**
-     * @var SoldierFactory
-     */
-    private $soldierFactory;
-
     public function __construct()
     {
         parent::__construct();
-        $this->soldierFactory = new SoldierFactory();
-        $this->addUnit();
-//        $this->recharge = $this->getRecharge();
     }
 
     public function calculateAttackProbability(): float
@@ -38,27 +29,48 @@ class Vehicle extends Unit implements CompositeInterface
         return $value;
     }
 
-    public function geometricAverage()
+    /**
+     * Calculate geometric average of attack probability of all composed Units
+     *
+     * @return float
+     */
+    public function geometricAverage(): float
     {
-        
+        $mult = 1;
+        foreach ($this->units as $unit) {
+            $mult *= $unit->calculateAttackProbability();
+        }
+
+        $gavg = pow($mult, 1 / count($this->units));
+
+        return $gavg;
     }
 
     public function calculateDamage(): float
     {
-        // TODO: Implement afflictDamage() method.
+        $sumExperience = 0;
+        foreach ($this->units as $unit) {
+            $sumExperience += $unit->getExperience();
+        }
+
+        $value = 0.1 + ($sumExperience / 100);
+        return $value;
     }
 
     /**
      * Man a Vehicle instance by 3 Solder instances
      */
-    public function addUnit()
+    public function addUnits($units)
     {
-        $this->units = $this->soldierFactory->createInstance(self::VEHICLE_OPERATORS);
+        $this->units = $units;
+//        $this->units = $this->soldierFactory->createInstance(self::VEHICLE_OPERATORS);
     }
 
-    public function removeUnit()
+    public function removeUnit($unit)
     {
-        // TODO: Implement removeUnit() method.
+        $this->units = array_udiff($this->units, array($unit), function($a, $b){
+            return ($a === $b) ? 0 : 1;
+        });
     }
 
 }

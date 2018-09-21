@@ -24,7 +24,7 @@ abstract class Unit implements UnitInterface
      * Represents the number of ms required to recharge the unit for an attack (ms)
      * @var
      */
-    protected $recharge;
+    /*protected $recharge;*/
 
     /**
      * Unit activity status
@@ -54,10 +54,10 @@ abstract class Unit implements UnitInterface
     /**
      * @return mixed
      */
-    public function getRecharge(): int
+    /*public function getRecharge(): int
     {
         return $this->recharge;
-    }
+    }*/
 
     /**
      * @return mixed

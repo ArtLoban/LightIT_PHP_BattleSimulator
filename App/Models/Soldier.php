@@ -13,7 +13,15 @@ class Soldier extends Unit
     public function __construct()
     {
         parent::__construct();
-        $this->recharge = $this->generateRechargeValue();
+       /* $this->recharge = $this->generateRechargeValue();*/
+    }
+
+    /**
+     * @return int
+     */
+    public function getExperience(): int
+    {
+        return $this->experience;
     }
 
     /**
@@ -28,10 +36,10 @@ class Soldier extends Unit
      * Generates a random value for the recharge property
      * @return int
      */
-    public function generateRechargeValue(): int
+    /*public function generateRechargeValue(): int
     {
         return mt_rand(100, 2000);
-    }
+    }*/
 
     public function calculateAttackProbability(): float
     {

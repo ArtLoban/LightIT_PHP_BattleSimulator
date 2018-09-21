@@ -4,8 +4,8 @@ namespace App\Models\Interfaces;
 
 interface CompositeInterface
 {
-    public function addUnit();
+    public function addUnits($units);
 
-    public function removeUnit();
+    public function removeUnit($unit);
 
 }

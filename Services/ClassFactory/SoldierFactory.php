@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\Factory;
+namespace Services\ClassFactory;
 
 use App\Models\Soldier;
 
