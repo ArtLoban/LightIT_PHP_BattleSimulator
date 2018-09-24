@@ -2,21 +2,34 @@
 
 namespace App;
 
+use Services\ArmyGenerator\GenerateArmy;
+
 class SimulatorController
 {
     public function start()
     {
-        echo 'Simulation starts here!' . PHP_EOL;
+        echo PHP_EOL . 'Simulation starts here!' . PHP_EOL. PHP_EOL;
 
 
 
         /* TESTS HERE*/
 
-    //$soldier = new \App\Models\Vehicle();
+        /*$a = new ArmyFactory;
 
-    //print_r($soldier);
-    //print_r($soldier->geometricAverage() . PHP_EOL);
+        $list = [
+            'strategy' => 'random',
+            'squads' => [
+                0 => ['soldiers' => 7],
+                1 => ['vehicles' => 5],
+                2 => ['vehicles' => 9],
+                3 => ['soldiers' => 10],
+            ]];
 
+        $a->create($list, 1);*/
+
+        $g = new GenerateArmy;
+
+        $g->generate();
     }
 
 }

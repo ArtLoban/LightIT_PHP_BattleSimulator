@@ -10,7 +10,7 @@ class Army extends Unit implements CompositeInterface
      * The number of Units $this instance is composed of
      * @var array
      */
-    protected $units;
+    protected $units = [];
 
     /**
      * Contain represented army's id
@@ -18,23 +18,40 @@ class Army extends Unit implements CompositeInterface
      */
     private $armyId;
 
-    public function __construct($armyId)
+    /**
+     * The choice of attack strategy per army
+     * @var
+     */
+    private $strategy;
+
+
+    /**
+     * @param mixed $strategy
+     */
+    public function setStrategy(string $strategy): void
     {
-        parent::__construct();
-        $this->armyId = $armyId;
+        $this->strategy = $strategy;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getArmy()
+    public function getArmyId(): int
     {
         return $this->armyId;
     }
 
-    public function addUnits($units)
+    /**
+     * @param int $armyId
+     */
+    public function setArmyId(int $armyId)
     {
-        $this->units = $units;
+        $this->armyId = $armyId;
+    }
+
+    public function addUnit($unit)
+    {
+        $this->units[] = $unit;
     }
 
     public function removeUnit($unit)

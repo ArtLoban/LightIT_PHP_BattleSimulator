@@ -14,20 +14,8 @@ class UnitFactory
     const VEHICLE_UNIT = Vehicle::class;
     const SOLDIER_UNIT = Soldier::class;
 
-    public function createUnit($className)
+    public function create($className)
     {
         return $unit = new $className;
     }
-
-    /*public function createUnits($className, $quantity = null)
-    {
-        $units = [];
-
-        for ($i = 0; $i < $quantity; $i++) {
-            $units[] = new $className;
-        }
-
-        return $units;
-    }*/
-
 }

@@ -15,7 +15,7 @@ class Vehicle extends Unit implements CompositeInterface
      * The number of Units $this instance is composed of.
      * @var array
      */
-    public $units;
+    protected $units;
 
     public function __construct()
     {
@@ -60,9 +60,9 @@ class Vehicle extends Unit implements CompositeInterface
     /**
      * Man a Vehicle instance by 3 Solder instances
      */
-    public function addUnits($units)
+    public function addUnit($unit)
     {
-        $this->units = $units;
+        $this->units = $unit;
 //        $this->units = $this->soldierFactory->createInstance(self::VEHICLE_OPERATORS);
     }
 

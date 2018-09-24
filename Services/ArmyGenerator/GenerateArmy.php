@@ -2,74 +2,64 @@
 
 namespace Services\ArmyGenerator;
 
-
-use App\Models\Vehicle;
-use Services\ClassFactory\UnitFactory;
+use Services\ClassFactory\ArmyFactory;
 
 class GenerateArmy
 {
-    private $configurator = [
-        'armies' => 2,
-        'squads' => [
-            0 => ['soldiers' => 7],
-            1 => ['vehicles' => 5],
-            2 => ['vehicles' => 9],
-            3 => ['soldiers' => 10],
-        ]
+    /**
+     * Example
+     * @var array
+     */
+    private $armiesList = [
+        0 => [
+            'strategy' => 'random',
+            'squads' => [
+                0 => ['soldiers' => 7],
+                1 => ['vehicles' => 5],
+                2 => ['vehicles' => 9],
+                3 => ['soldiers' => 10],
+            ],
+        ],
+        1 => [
+            'strategy' => 'weakest',
+            'squads' => [
+                0 => ['soldiers' => 7],
+                1 => ['vehicles' => 5],
+                2 => ['vehicles' => 9],
+                3 => ['soldiers' => 10],
+            ],
+        ],
     ];
 
-    private $factory;
+    /**
+     * @var array
+     */
     private $army = [];
+
+    private $factory;
 
     /**
      * GenerateArmy constructor.
      */
     public function __construct(/*$configurator*/)
     {
-        $this->factory = new UnitFactory();
+        $this->factory = new ArmyFactory();
         /*$this->configurator = $configurator;*/
     }
 
-    public function makeArmies()
+    public function generate()
     {
-        for ($i = 1; $i < count($this->configurator) + 1; $i++) {
-            $this->factory->createUnit(UnitFactory::ARMY_UNIT);
-
-            // TODO: Make Squads
-        }
-    }
-
-    private function makeSquad($unitType, $quantity)
-    {
-        $squad = $this->factory->createUnit(UnitFactory::SQUAD_UNIT);
-
-        for ($i = 0; $i < $quantity; $i++) {
-
-            if ($unitType == 'soldiers') {
-                $squad->addUnits($this->makeSoldier());
-            } elseif ($unitType == 'vehicles') {
-                $squad->addUnits($this->makeVehile());
-            }
+        $armies = [];
+        $armyId = 1;
+        foreach ($this->armiesList as $list) {
+            $armies = $this->factory->create($list, $armyId);
+            $armyId++;
         }
 
-        return $squad;
+        print_r($armies);
+
+        return $armies;
     }
 
-    private function makeVehile()
-    {
-        $vehicle = $this->factory->createUnit(UnitFactory::VEHICLE_UNIT);
 
-        $operators = Vehicle::VEHICLE_OPERATORS;
-
-        for ($i = 0; $i < $operators; $i++) {
-            $vehicle->addUnits($this->makeSoldier());
-        }
-
-        return $vehicle;
-    }
-
-    private function makeSoldier()
-    {
-        return $this->factory->createUnit(UnitFactory::SOLDIER_UNIT);
-    }
 }

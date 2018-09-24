@@ -12,8 +12,9 @@ class SoldierFactory
      * @param int $quantity
      * @return array
      */
-    public function createInstance(int $quantity): array
+    public function create(int $quantity): array
     {
+        $instances = [];
         for ($i = 0; $i < $quantity; $i++) {
             $instances[] = new Soldier();
         }

@@ -10,23 +10,29 @@ class Squad extends Unit implements CompositeInterface
      * The number of Units $this instance is composed of
      * @var array
      */
-    protected $units;
+    protected $units = [];
 
-    /**
-     * Contain represented army's id
-     * @var
-     */
     private $armyId;
 
-    public function __construct($armyId)
+    /**
+     * @return int
+     */
+    public function getArmyId(): int
     {
-        parent::__construct();
+        return $this->armyId;
+    }
+
+    /**
+     * @param int $armyId
+     */
+    public function setArmyId(int $armyId)
+    {
         $this->armyId = $armyId;
     }
 
-    public function addUnits($units)
+    public function addUnit($unit)
     {
-        $this->units = $units;
+        $this->units = $unit;
     }
 
     public function removeUnit($unit)
@@ -57,13 +63,4 @@ class Squad extends Unit implements CompositeInterface
     {
         // TODO: Implement afflictDamage() method.
     }
-
-    /**
-     * @return mixed
-     */
-    public function getArmyId()
-    {
-        return $this->armyId;
-    }
-
 }
