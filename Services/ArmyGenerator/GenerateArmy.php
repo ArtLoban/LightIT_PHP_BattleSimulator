@@ -2,15 +2,12 @@
 
 namespace Services\ArmyGenerator;
 
-use Services\ClassFactory\ArmyFactory;
+use Services\ClassFactory\Units\ArmyFactory;
 
 class GenerateArmy
 {
-    /**
-     * Example
-     * @var array
-     */
-    private $armiesList = [
+    /* Required array structure */
+    /*private $armiesList = [
         0 => [
             'strategy' => 'random',
             'squads' => [
@@ -29,37 +26,25 @@ class GenerateArmy
                 3 => ['soldiers' => 10],
             ],
         ],
-    ];
+    ];*/
 
     /**
-     * @var array
+     * Transform an initial array with list of required armies into
+     *  an array of Army Models composed with squads and units according to the list
+     *
+     * @param array $armiesList
+     * @return array
      */
-    private $army = [];
-
-    private $factory;
-
-    /**
-     * GenerateArmy constructor.
-     */
-    public function __construct(/*$configurator*/)
-    {
-        $this->factory = new ArmyFactory();
-        /*$this->configurator = $configurator;*/
-    }
-
-    public function generate()
+    public function generate(array $armiesList): array
     {
         $armies = [];
         $armyId = 1;
-        foreach ($this->armiesList as $list) {
-            $armies = $this->factory->create($list, $armyId);
+        foreach ($armiesList as $list) {
+            $army = new ArmyFactory();
+            $armies[] = $army->create($list, $armyId);
             $armyId++;
         }
-
-        print_r($armies);
-
         return $armies;
     }
-
 
 }

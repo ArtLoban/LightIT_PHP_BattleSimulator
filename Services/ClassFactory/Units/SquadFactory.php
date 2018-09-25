@@ -1,13 +1,19 @@
 <?php
 
-namespace Services\ClassFactory;
+namespace Services\ClassFactory\Units;
 
 use App\Models\Squad;
 
 class SquadFactory
 {
+    /**
+     * @var Squad
+     */
     private $squad;
 
+    /**
+     * @var array
+     */
     private $squadTypes = [
         'soldiers' => SoldierFactory::class,
         'vehicles' => VehicleFactory::class,
@@ -21,6 +27,11 @@ class SquadFactory
         $this->squad = new Squad();
     }
 
+    /**
+     * @param $squadType
+     * @param $quantity
+     * @return mixed
+     */
     public function create($squadType, $quantity)
     {
         foreach ($this->squadTypes as $unitName => $unitFactory) {

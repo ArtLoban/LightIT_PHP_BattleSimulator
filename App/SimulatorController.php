@@ -2,10 +2,17 @@
 
 namespace App;
 
-use Services\ArmyGenerator\GenerateArmy;
+use Services\ClassFactory\Factory;
 
 class SimulatorController
 {
+    private $classFactory;
+
+    public function __construct()
+    {
+        $this->classFactory = new Factory;
+    }
+
     public function start()
     {
         echo PHP_EOL . 'Simulation starts here!' . PHP_EOL. PHP_EOL;
@@ -14,22 +21,28 @@ class SimulatorController
 
         /* TESTS HERE*/
 
-        /*$a = new ArmyFactory;
+        $list = $this->getArmyConfiguration();
 
-        $list = [
-            'strategy' => 'random',
-            'squads' => [
-                0 => ['soldiers' => 7],
-                1 => ['vehicles' => 5],
-                2 => ['vehicles' => 9],
-                3 => ['soldiers' => 10],
-            ]];
+        $g = $this->classFactory->create('GenerateArmy');
+        $res = $g->generate($list);
+        print_r($res);
 
-        $a->create($list, 1);*/
 
-        $g = new GenerateArmy;
-
-        $g->generate();
     }
+
+    /**
+     * Initiate the generation of a list of armies
+     * @return array
+     */
+    private function getArmyConfiguration(): array
+    {
+        $armiesList = $this->classFactory->create('ConfigureArmiesList');
+
+        return $armiesList->getList();
+    }
+
+
+
+
 
 }

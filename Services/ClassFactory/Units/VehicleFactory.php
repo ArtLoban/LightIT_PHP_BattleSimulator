@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\ClassFactory;
+namespace Services\ClassFactory\Units;
 
 use App\Models\Vehicle;
 
@@ -24,6 +24,9 @@ class VehicleFactory
         return $instances;
     }
 
+    /**
+     * @return array
+     */
     public function createSoldiers()
     {
         $factory = new SoldierFactory;

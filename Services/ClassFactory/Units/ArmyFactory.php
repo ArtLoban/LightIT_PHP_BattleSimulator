@@ -1,12 +1,16 @@
 <?php
 
-namespace Services\ClassFactory;
+namespace Services\ClassFactory\Units;
 
 use App\Models\Army;
 
 class ArmyFactory
 {
+    /**
+     * @var Army
+     */
     private $armyUnit;
+
     /**
      * ArmyFactory constructor.
      */
@@ -15,6 +19,11 @@ class ArmyFactory
         $this->armyUnit = new Army();
     }
 
+    /**
+     * @param array $list
+     * @param int $id
+     * @return Army
+     */
     public function create(array $list, int $id)
     {
         $this->armyUnit->setArmyId($id);
@@ -23,10 +32,13 @@ class ArmyFactory
         foreach ($list['squads'] as $squadItem) {
             $this->armyUnit->addUnit($this->createSquad($squadItem));
         }
-
         return $this->armyUnit;
     }
 
+    /**
+     * @param $squadItem
+     * @return mixed|SquadFactory
+     */
     public function createSquad($squadItem)
     {
         $squad =  new SquadFactory();
