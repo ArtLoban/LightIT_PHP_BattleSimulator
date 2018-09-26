@@ -61,6 +61,11 @@ class Squad extends Unit implements CompositeInterface
 
     public function calculateDamage(): float
     {
-        // TODO: Implement afflictDamage() method.
+        $sum = 0;
+        foreach ($this->units as $unit) {
+            $sum += $unit->calculateAttackProbability();
+        }
+
+        return $sum;
     }
 }

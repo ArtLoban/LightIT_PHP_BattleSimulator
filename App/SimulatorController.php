@@ -15,18 +15,14 @@ class SimulatorController
 
     public function start()
     {
-        echo PHP_EOL . 'Simulation starts here!' . PHP_EOL. PHP_EOL;
+        echo PHP_EOL . '+++! Simulation starts here! !+++' . PHP_EOL. PHP_EOL;
 
+        $listOfArmies = $this->getArmyConfiguration();
 
+        $armiesGenerator = $this->classFactory->create('GenerateArmy');
+        $armies = $armiesGenerator->generate($listOfArmies);
 
-        /* TESTS HERE*/
-
-        $list = $this->getArmyConfiguration();
-
-        $g = $this->classFactory->create('GenerateArmy');
-        $res = $g->generate($list);
-        print_r($res);
-
+        print_r($armies);
 
     }
 

@@ -10,7 +10,7 @@ class Army extends Unit implements CompositeInterface
      * The number of Units $this instance is composed of
      * @var array
      */
-    protected $units = [];
+    private $units = [];
 
     /**
      * Contain represented army's id
@@ -52,6 +52,11 @@ class Army extends Unit implements CompositeInterface
     public function addUnit($unit)
     {
         $this->units[] = $unit;
+    }
+
+    public function getUnit()
+    {
+        return $this->units;
     }
 
     public function removeUnit($unit)

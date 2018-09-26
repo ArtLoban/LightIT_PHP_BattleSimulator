@@ -34,12 +34,12 @@ class RandomConfigurator implements ConfiguratorInterface
      */
     private $armySettings = [
         'NumberOfArmies' => [
-            'min' => 2,
-            'max' => 2
-        ],
-        'SquadsPerArmy' => [
             'min' => 1,
             'max' => 1
+        ],
+        'SquadsPerArmy' => [
+            'min' => 2,
+            'max' => 2
         ],
         'UnitsPerSquad' => [
             'min' => 1,

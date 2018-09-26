@@ -30,9 +30,20 @@ class SquadFactory
     /**
      * @param $squadType
      * @param $quantity
-     * @return mixed
+     * @return Squad
      */
     public function create($squadType, $quantity)
+    {
+        $this->squad->addUnit($this->createUnit($squadType, $quantity));
+        return $this->squad;
+    }
+
+    /**
+     * @param $squadType
+     * @param $quantity
+     * @return mixed
+     */
+    public function createUnit($squadType, $quantity)
     {
         foreach ($this->squadTypes as $unitName => $unitFactory) {
             if ($unitName === $squadType) {
