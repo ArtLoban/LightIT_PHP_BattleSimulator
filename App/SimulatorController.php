@@ -17,13 +17,18 @@ class SimulatorController
     {
         echo PHP_EOL . '+++! Simulation starts here! !+++' . PHP_EOL. PHP_EOL;
 
+        // Receive the list of armies to generate
         $listOfArmies = $this->getArmyConfiguration();
 
+        // Generate armies according to the list
         $armiesGenerator = $this->classFactory->create('GenerateArmy');
         $armies = $armiesGenerator->generate($listOfArmies);
 
-        print_r($armies);
+        // Simulate battle
+        $simulator = $this->classFactory->create('BattleSimulator');
+        $simulator->simulate($armies);
 
+//        print_r($armies);
     }
 
     /**
@@ -36,9 +41,5 @@ class SimulatorController
 
         return $armiesList->getList();
     }
-
-
-
-
 
 }

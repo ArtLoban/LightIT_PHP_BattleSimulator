@@ -27,7 +27,7 @@ class VehicleFactory
     /**
      * @return array
      */
-    public function createSoldiers()
+    public function createSoldiers(): array
     {
         $factory = new SoldierFactory;
         $soldiers = $factory->create(Vehicle::VEHICLE_OPERATORS);

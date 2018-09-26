@@ -2,6 +2,7 @@
 
 namespace Services\ArmyConfigurator;
 
+use App\Models\Army;
 use Services\ArmyConfigurator\Contracts\ConfiguratorInterface;
 
 class RandomConfigurator implements ConfiguratorInterface
@@ -15,11 +16,7 @@ class RandomConfigurator implements ConfiguratorInterface
     /**
      * @var array
      */
-    private $strategyType = [
-        'random',
-        'weakest',
-        'strongest'
-    ];
+    private $strategyType = Army::BATTLE_STRATEGY;
 
     /**
      * @var array
@@ -34,16 +31,16 @@ class RandomConfigurator implements ConfiguratorInterface
      */
     private $armySettings = [
         'NumberOfArmies' => [
-            'min' => 1,
-            'max' => 1
+            'min' => 3,
+            'max' => 3
         ],
         'SquadsPerArmy' => [
             'min' => 2,
             'max' => 2
         ],
         'UnitsPerSquad' => [
-            'min' => 1,
-            'max' => 1
+            'min' => 3,
+            'max' => 3
         ]
     ];
 

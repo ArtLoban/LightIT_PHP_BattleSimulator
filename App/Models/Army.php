@@ -6,6 +6,12 @@ use App\Models\Interfaces\CompositeInterface;
 
 class Army extends Unit implements CompositeInterface
 {
+    const BATTLE_STRATEGY = [
+        'random',
+        'weakest',
+        'strongest'
+    ];
+
     /**
      * The number of Units $this instance is composed of
      * @var array
@@ -34,6 +40,14 @@ class Army extends Unit implements CompositeInterface
     }
 
     /**
+     * @return string
+     */
+    public function getStrategy(): string
+    {
+        return $this->strategy;
+    }
+
+    /**
      * @return int
      */
     public function getArmyId(): int
@@ -59,11 +73,38 @@ class Army extends Unit implements CompositeInterface
         return $this->units;
     }
 
-    public function removeUnit($unit)
+    /**
+     * Remove Unit from units[] property
+     * @param Unit $unit
+     */
+    public function removeUnit(Unit $unit)
     {
-        $this->units = array_udiff($this->units, array($unit), function($a, $b){
-            return ($a === $b) ? 0 : 1;
-        });
+        foreach ($this->units as $key => $composedUnit) {
+            if ($composedUnit === $unit) {
+                unset($this->units[$key]);
+            }
+        }
+    }
+
+    /**
+     * Determine if there any Squads composed in current army Instance
+     * Return TRUE - if there is at least one Squad
+     * @return bool
+     */
+    public function chechUnits(): bool
+    {
+        return (empty($this->units)) ? false : true;
+    }
+
+    /**
+     * @return Squad
+     */
+    public function chooseRandomUnit(): Squad
+    {
+        $randomKey = array_rand($this->units);
+        $randomUnit = $this->units[$randomKey];
+
+        return $randomUnit;
     }
 
     public function calculateAttackProbability(): float

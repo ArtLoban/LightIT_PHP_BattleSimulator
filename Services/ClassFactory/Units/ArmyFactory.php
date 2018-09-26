@@ -3,6 +3,7 @@
 namespace Services\ClassFactory\Units;
 
 use App\Models\Army;
+use App\Models\Squad;
 
 class ArmyFactory
 {
@@ -24,7 +25,7 @@ class ArmyFactory
      * @param int $id
      * @return Army
      */
-    public function create(array $list, int $id)
+    public function create(array $list, int $id): Army
     {
         $this->armyUnit->setArmyId($id);
         $this->armyUnit->setStrategy($list['strategy']);
@@ -36,17 +37,16 @@ class ArmyFactory
     }
 
     /**
-     * @param $squadItem
-     * @return mixed|SquadFactory
+     * @param array $squadItem
+     * @return Squad
      */
-    public function createSquad($squadItem)
+    public function createSquad(array $squadItem): Squad
     {
         $squad =  new SquadFactory();
 
         foreach ($squadItem as $key => $value) {
             $squad = $squad->create($key, $value);
         }
-
         return $squad;
     }
 

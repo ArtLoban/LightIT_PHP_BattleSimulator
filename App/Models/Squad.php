@@ -35,11 +35,17 @@ class Squad extends Unit implements CompositeInterface
         $this->units = $unit;
     }
 
-    public function removeUnit($unit)
+    /**
+     * Remove Unit from units[] property
+     * @param Unit $unit
+     */
+    public function removeUnit(Unit $unit)
     {
-        $this->units = array_udiff($this->units, array($unit), function($a, $b){
-            return ($a === $b) ? 0 : 1;
-        });
+        foreach ($this->units as $key => $composedUnit) {
+            if ($composedUnit === $unit) {
+                unset($this->units[$key]);
+            }
+        }
     }
 
     /**

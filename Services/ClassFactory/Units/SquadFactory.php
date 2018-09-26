@@ -28,29 +28,28 @@ class SquadFactory
     }
 
     /**
-     * @param $squadType
-     * @param $quantity
+     * @param string $squadType
+     * @param int $quantity
      * @return Squad
      */
-    public function create($squadType, $quantity)
+    public function create(string $squadType, int $quantity): Squad
     {
         $this->squad->addUnit($this->createUnit($squadType, $quantity));
         return $this->squad;
     }
 
     /**
-     * @param $squadType
-     * @param $quantity
-     * @return mixed
+     * @param string $squadType
+     * @param int $quantity
+     * @return array
      */
-    public function createUnit($squadType, $quantity)
+    public function createUnit(string $squadType, int $quantity): array
     {
         foreach ($this->squadTypes as $unitName => $unitFactory) {
             if ($unitName === $squadType) {
                 $unit = new $unitFactory;
             }
         }
-
         $units = $unit->create($quantity);
         return $units;
     }
