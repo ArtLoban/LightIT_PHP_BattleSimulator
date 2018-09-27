@@ -2,11 +2,15 @@
 
 namespace Services\StrategyChooser;
 
+use App\Models\Squad;
 
 class RandomPicker implements StrategyChooserInterface
 {
-    public function choose(array $units)
+    public function choose(array $units): Squad
     {
-        // TODO: Implement choose() method.
+        $randomKey = array_rand($units);
+        $randomSquad = $units[$randomKey];
+
+        return $randomSquad;
     }
 }

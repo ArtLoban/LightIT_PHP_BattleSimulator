@@ -52,17 +52,18 @@ class BattleSimulator
      */
     private function determineWiner(array $armies): string
     {
-        $winer = array_shift($armies);
-        return 'Winner is Army-'. $winer->getArmyId() . PHP_EOL;
+        $winner = array_shift($armies);
+
+        return 'Winner is Army-'. $winner->getArmyId() . PHP_EOL;
     }
 
     /**
-     * Arrange one cycle of the battle .
+     * Arrange one cycle of the battle.
      * One Squad of each Army makes one attacking attempt
      *
      * @param array $armies
      */
-    private function startIteration(array $armies)
+    private function startIteration(array $armies): void
     {
         $rivals = [];
         foreach ($armies as $armyKey => $army) {
@@ -74,6 +75,13 @@ class BattleSimulator
             $allSquads = $this->mergeAllSquads($armies, $armyKey);
             $defendingSquad = $this->determineDefender($allSquads, $army->getStrategy());
             $rivals['defender'] = $defendingSquad;
+
+            // Determine the winner
+            $battleMaster = $this->factory->create('BattleMaster');
+            $battleMaster->runBattle($rivals);
+
+            print_r($rivals['defender']); die();
+            // Remove defending Squad if it contains no more Units
 
             break;
         }
@@ -101,17 +109,20 @@ class BattleSimulator
     }
 
     /**
+     * Choose a defending Squad according to a given strategy option
+     *
      * @param array $allSquads
      * @param string $strategy
      * @return Squad
      */
-    private function determineDefender(array $allSquads, string $strategy)
+    private function determineDefender(array $allSquads, string $strategy): Squad
     {
-        foreach ($this->strategies as $strategyName => $strategyClass) {
-            if ($strategyName === $strategy) {
-                $strategyChooser = $this->factory->create($strategyClass);
-            }
-        }
+        /*if (!array_key_exists($strategy, $this->strategies)) {
+            throw new Exception("Custom Error: there is no $strategy strategy in the given array");
+        }*/
+
+        $className = $this->strategies[$strategy];
+        $strategyChooser = $this->factory->create($className);
         $defendingSquad = $strategyChooser->choose($allSquads);
 
         return $defendingSquad;

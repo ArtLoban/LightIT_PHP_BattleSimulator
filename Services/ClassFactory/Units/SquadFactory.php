@@ -24,7 +24,8 @@ class SquadFactory
      */
     public function __construct()
     {
-        $this->squad = new Squad();
+        $unitFactory = new UnitFactory;
+        $this->squad = $unitFactory->create('Squad');
     }
 
     /**
@@ -32,9 +33,10 @@ class SquadFactory
      * @param int $quantity
      * @return Squad
      */
-    public function create(string $squadType, int $quantity): Squad
+    public function create(string $squadType, int $quantity = 3): Squad
     {
         $this->squad->addUnit($this->createUnit($squadType, $quantity));
+
         return $this->squad;
     }
 
@@ -43,14 +45,15 @@ class SquadFactory
      * @param int $quantity
      * @return array
      */
-    public function createUnit(string $squadType, int $quantity): array
+    public function createUnit(string $squadType, int $quantity = 3): array
     {
-        foreach ($this->squadTypes as $unitName => $unitFactory) {
-            if ($unitName === $squadType) {
-                $unit = new $unitFactory;
-            }
-        }
-        $units = $unit->create($quantity);
+        /*if (!array_key_exists($squadType, $this->squadTypes)) {
+            throw new Exception("Custom Error: there is no $squadType squad type in the given array");
+        }*/
+
+        $unitInstance = new $this->squadTypes[$squadType];
+        $units = $unitInstance->create($quantity);
+
         return $units;
     }
 }

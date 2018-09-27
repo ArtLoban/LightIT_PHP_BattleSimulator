@@ -30,9 +30,20 @@ class Squad extends Unit implements CompositeInterface
         $this->armyId = $armyId;
     }
 
+    /**
+     * @param $unit
+     */
     public function addUnit($unit)
     {
         $this->units = $unit;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUnits(): array
+    {
+        return $this->units;
     }
 
     /**
@@ -74,4 +85,30 @@ class Squad extends Unit implements CompositeInterface
 
         return $sum;
     }
+
+    /**
+     * Increment the experience of each unit member
+     */
+    public function incrementExperience(): void
+    {
+        foreach ($this->units as $unit) {
+            $unit->incrementExperience();
+        }
+    }
+
+    /**
+     * Distribute the received damage equally to each Squad unit member
+     *
+     * @param float $damageValue
+     */
+    public function receiveDamage(float $totalDamageValue): void
+    {
+        $unitsQuantity = count($this->units);
+        $equalDamagePart = $totalDamageValue / $unitsQuantity;
+
+        foreach ($this->units as $unit) {
+            $unit->receiveDamage($equalDamagePart);
+        }
+    }
+
 }

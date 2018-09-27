@@ -24,11 +24,12 @@ class SimulatorController
         $armiesGenerator = $this->classFactory->create('GenerateArmy');
         $armies = $armiesGenerator->generate($listOfArmies);
 
+//        print_r($armies); die();
+
         // Simulate battle
         $simulator = $this->classFactory->create('BattleSimulator');
         $simulator->simulate($armies);
 
-//        print_r($armies);
     }
 
     /**

@@ -17,7 +17,8 @@ class ArmyFactory
      */
     public function __construct()
     {
-        $this->armyUnit = new Army();
+        $unitFactory = new UnitFactory;
+        $this->armyUnit = $unitFactory->create('Army');
     }
 
     /**

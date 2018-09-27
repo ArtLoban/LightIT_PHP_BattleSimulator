@@ -35,12 +35,12 @@ class RandomConfigurator implements ConfiguratorInterface
             'max' => 3
         ],
         'SquadsPerArmy' => [
-            'min' => 2,
-            'max' => 2
-        ],
-        'UnitsPerSquad' => [
             'min' => 3,
             'max' => 3
+        ],
+        'UnitsPerSquad' => [
+            'min' => 5,
+            'max' => 5
         ]
     ];
 
@@ -50,6 +50,7 @@ class RandomConfigurator implements ConfiguratorInterface
     public function getArmiesList(): array
     {
         $list = (self::EQUAL_TERMS) ? $this->makeEqualArmies() : $this->makeRandomArmies();
+
         return $list;
     }
 
@@ -85,6 +86,7 @@ class RandomConfigurator implements ConfiguratorInterface
             $armyUnit['strategy'] = $this->setStrategy();
             $list[] = $armyUnit;
         }
+
         return $list;
     }
 
@@ -98,6 +100,7 @@ class RandomConfigurator implements ConfiguratorInterface
         for ($i = 0; $i < $this->setSquadsQuantity(); $i++) {
             $squads[] = [$this->setUnitType() => $this->setUnitsQuantity()];
         }
+
         return $squads;
     }
 
@@ -108,6 +111,7 @@ class RandomConfigurator implements ConfiguratorInterface
     private function setArmiesQuantity(): int
     {
         $result = mt_rand($this->armySettings['NumberOfArmies']['min'], $this->armySettings['NumberOfArmies']['max']);
+
         return $result;
     }
 
@@ -118,6 +122,7 @@ class RandomConfigurator implements ConfiguratorInterface
     private function setSquadsQuantity(): int
     {
         $result = mt_rand($this->armySettings['SquadsPerArmy']['min'], $this->armySettings['SquadsPerArmy']['max']);
+
         return $result;
     }
 
@@ -128,6 +133,7 @@ class RandomConfigurator implements ConfiguratorInterface
     private function setUnitsQuantity(): int
     {
         $result = mt_rand($this->armySettings['UnitsPerSquad']['min'], $this->armySettings['UnitsPerSquad']['max']);
+
         return $result;
     }
 

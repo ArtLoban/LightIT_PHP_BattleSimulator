@@ -16,7 +16,8 @@ abstract class Unit implements UnitInterface
 
     /**
      * Represents the health of the unit (%)
-     * @var
+     *
+     * @var float
      */
     protected $health;
 
@@ -44,11 +45,19 @@ abstract class Unit implements UnitInterface
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getHealth(): int
+    public function getHealth(): float
     {
         return $this->health;
+    }
+
+    /**
+     * @param mixed $health
+     */
+    public function setHealth(int $health): void
+    {
+        $this->health = $health;
     }
 
     /**

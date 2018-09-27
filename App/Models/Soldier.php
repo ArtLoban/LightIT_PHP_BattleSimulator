@@ -27,9 +27,9 @@ class Soldier extends Unit
     /**
      * Increments the experience property value
      */
-    public function incrementExperience(): int
+    public function incrementExperience(): void
     {
-        $this->experience = ($this->experience == 50) ? $this->experience = 50 : $this->experience++;
+        $this->experience = ($this->experience == 50) ? 50 : $this->experience + 1;
     }
 
     /**
@@ -53,4 +53,11 @@ class Soldier extends Unit
         return $value;
     }
 
+    /**
+     * @param float $damageValue
+     */
+    public function receiveDamage(float $damageValue): void
+    {
+        $this->health = $this->health - $damageValue;
+    }
 }

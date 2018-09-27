@@ -44,6 +44,7 @@ class GenerateArmy
             $armies[] = $army->create($list, $armyId);
             $armyId++;
         }
+
         return $armies;
     }
 
