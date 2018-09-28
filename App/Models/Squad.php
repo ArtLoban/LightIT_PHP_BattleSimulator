@@ -54,7 +54,7 @@ class Squad extends Unit implements CompositeInterface
         }
         $value = pow($mult, 1 / count($this->units));
 
-        return round($value, 2);
+        return round($value, 3);
     }
 
     /**
@@ -64,7 +64,7 @@ class Squad extends Unit implements CompositeInterface
     {
         $sum = 0;
         foreach ($this->units as $unit) {
-            $sum += $unit->calculateAttackProbability();
+            $sum += $unit->calculateDamage();
         }
 
         return round($sum, 2);

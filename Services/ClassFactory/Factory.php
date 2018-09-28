@@ -2,6 +2,7 @@
 
 namespace Services\ClassFactory;
 
+use Exception;
 use Services\ArmyConfigurator\ConfigureArmiesList;
 use Services\ArmyConfigurator\RandomConfigurator;
 use Services\ArmyGenerator\GenerateArmy;
@@ -35,9 +36,9 @@ class Factory
      */
     public function create(string $className): object
     {
-        /*if (!array_key_exists($className, $this->classes)) {
-            throw new Exception("Custom Error: there is no $className class name in the given array");
-        }*/
+        if (!array_key_exists($className, $this->classes)) {
+            throw new Exception("Custom Error: there is no {$className} class name in the given array");
+        }
 
         $classInstance = new $this->classes[$className];
 

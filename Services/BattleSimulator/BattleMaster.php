@@ -18,12 +18,13 @@ class BattleMaster
         $attackerProbability = $rivals['attacker']->calculateAttackProbability();
         $defenderProbability = $rivals['defender']->calculateAttackProbability();
 
-        if ($attackerProbability > $defenderProbability) {
+        if ($attackerProbability >= $defenderProbability) {
             // Winner receives the experience
             $this->gainExperience($rivals['attacker']);
 
             // Loser suffers damage
             $damage = $rivals['attacker']->calculateDamage();
+
             $this->receiveDamage($rivals['defender'], $damage);
 
             // Remove composed units from defending Squad unit if they hove no more health

@@ -36,11 +36,11 @@ class RandomConfigurator implements ConfiguratorInterface
         ],
         'SquadsPerArmy' => [
             'min' => 2,
-            'max' => 2
+            'max' => 5
         ],
         'UnitsPerSquad' => [
-            'min' => 2,
-            'max' => 2
+            'min' => 5,
+            'max' => 10
         ]
     ];
 

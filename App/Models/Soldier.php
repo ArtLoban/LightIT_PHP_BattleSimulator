@@ -50,7 +50,7 @@ class Soldier extends Unit
     public function calculateAttackProbability(): float
     {
         $value = 0.5 * (1 + $this->health / 100) * mt_rand(50 + $this->experience, 100) / 100;
-        return round($value, 2);
+        return round($value, 3);
     }
 
     /**

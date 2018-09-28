@@ -39,7 +39,7 @@ class Vehicle extends Unit implements CompositeInterface
     {
         $value = 0.5 * (1 + $this->health / 100) * $this->geometricAverage();
 
-        return round($value, 2);
+        return round($value, 3);
     }
 
     /**
@@ -55,7 +55,7 @@ class Vehicle extends Unit implements CompositeInterface
         }
         $gavg = pow($mult, 1 / count($this->units));
 
-        return round($gavg, 2);
+        return round($gavg, 3);
     }
 
     /**

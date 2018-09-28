@@ -48,7 +48,7 @@ class BattleSimulator
 
         print_r($checkedArmies);
 
-        // Lunch new iterations until only one Army unit left
+        // Launch new iterations until only one Army unit left
         if (count($checkedArmies) > 1) {
             $this->startIteration($checkedArmies);
         } else {
@@ -64,7 +64,7 @@ class BattleSimulator
     {
         $winner = array_shift($armies);
 
-        return 'Winner is Army-'. $winner->getArmyId() . PHP_EOL;
+        return '> The Winner is Army-'. $winner->getArmyId() . ' <'. PHP_EOL;
     }
 
     /**
@@ -175,7 +175,5 @@ class BattleSimulator
 
         return $armies;
     }
-
-
 
 }
