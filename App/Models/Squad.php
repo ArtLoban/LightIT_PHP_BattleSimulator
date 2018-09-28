@@ -12,28 +12,10 @@ class Squad extends Unit implements CompositeInterface
      */
     protected $units = [];
 
-    private $armyId;
-
-    /**
-     * @return int
-     */
-    public function getArmyId(): int
-    {
-        return $this->armyId;
-    }
-
-    /**
-     * @param int $armyId
-     */
-    public function setArmyId(int $armyId)
-    {
-        $this->armyId = $armyId;
-    }
-
     /**
      * @param $unit
      */
-    public function addUnit($unit)
+    public function addUnit($unit): void
     {
         $this->units = $unit;
     }
@@ -50,7 +32,7 @@ class Squad extends Unit implements CompositeInterface
      * Remove Unit from units[] property
      * @param Unit $unit
      */
-    public function removeUnit(Unit $unit)
+    public function removeUnit(Unit $unit): void
     {
         foreach ($this->units as $key => $composedUnit) {
             if ($composedUnit === $unit) {
@@ -70,12 +52,14 @@ class Squad extends Unit implements CompositeInterface
         foreach ($this->units as $unit) {
             $mult *= $unit->calculateAttackProbability();
         }
-
         $value = pow($mult, 1 / count($this->units));
 
-        return $value;
+        return round($value, 2);
     }
 
+    /**
+     * @return float
+     */
     public function calculateDamage(): float
     {
         $sum = 0;
@@ -83,7 +67,7 @@ class Squad extends Unit implements CompositeInterface
             $sum += $unit->calculateAttackProbability();
         }
 
-        return $sum;
+        return round($sum, 2);
     }
 
     /**

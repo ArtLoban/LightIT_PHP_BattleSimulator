@@ -28,8 +28,6 @@ class BattleMaster
 
             // Remove composed units from defending Squad unit if they hove no more health
             $this->dieIfWasted($rivals['defender']);
-
-//            print_r($rivals['defender']); die();
         }
 
         return;
@@ -38,11 +36,15 @@ class BattleMaster
     /**
      * @param Squad $squad
      */
-    private function gainExperience(Squad $squad)
+    private function gainExperience(Squad $squad): void
     {
         $squad->incrementExperience();
     }
 
+    /**
+     * @param Squad $squad
+     * @param float $damage
+     */
     private function receiveDamage(Squad $squad, float $damage): void
     {
         foreach ($squad->getUnits() as $unit) {

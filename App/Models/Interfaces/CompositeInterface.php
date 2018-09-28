@@ -6,8 +6,14 @@ use App\Models\Unit;
 
 interface CompositeInterface
 {
-    public function addUnit($unit);
+    /**
+     * @param $unit
+     */
+    public function addUnit($unit): void;
 
-    public function removeUnit(Unit $unit);
+    /**
+     * @param Unit $unit
+     */
+    public function removeUnit(Unit $unit): void;
 
 }

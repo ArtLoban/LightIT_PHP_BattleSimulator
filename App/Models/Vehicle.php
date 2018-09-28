@@ -32,11 +32,6 @@ class Vehicle extends Unit implements CompositeInterface
      */
     protected $units;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * @return float
      */
@@ -44,7 +39,7 @@ class Vehicle extends Unit implements CompositeInterface
     {
         $value = 0.5 * (1 + $this->health / 100) * $this->geometricAverage();
 
-        return $value;
+        return round($value, 2);
     }
 
     /**
@@ -58,10 +53,9 @@ class Vehicle extends Unit implements CompositeInterface
         foreach ($this->units as $unit) {
             $mult *= $unit->calculateAttackProbability();
         }
-
         $gavg = pow($mult, 1 / count($this->units));
 
-        return $gavg;
+        return round($gavg, 2);
     }
 
     /**
@@ -73,15 +67,15 @@ class Vehicle extends Unit implements CompositeInterface
         foreach ($this->units as $unit) {
             $sumExperience += $unit->getExperience();
         }
-
         $value = 0.1 + ($sumExperience / 100);
-        return $value;
+
+        return round($value, 2);
     }
 
     /**
      * Man a Vehicle instance by 3 Solder instances
      */
-    public function addUnit($unit)
+    public function addUnit($unit): void
     {
         $this->units = $unit;
     }
@@ -98,7 +92,7 @@ class Vehicle extends Unit implements CompositeInterface
      * Remove Unit from units[] property
      * @param Unit $unit
      */
-    public function removeUnit(Unit $unit)
+    public function removeUnit(Unit $unit): void
     {
         foreach ($this->units as $key => $composedUnit) {
             if ($composedUnit === $unit) {
@@ -122,7 +116,8 @@ class Vehicle extends Unit implements CompositeInterface
      */
     public function receiveDamage(float $totalDamageValue): void
     {
-        $this->health = $this->health - ($totalDamageValue * self::SELF_DAMAGE_VALUE);
+        $vehicleDamage = $this->health - ($totalDamageValue * self::SELF_DAMAGE_VALUE);
+        $this->health = round($vehicleDamage);
         $this->distributeDamage($totalDamageValue);
 
         // Remove composed operators from Vehicle unit if they hove no more health

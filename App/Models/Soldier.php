@@ -10,6 +10,9 @@ class Soldier extends Unit
      */
     protected $experience = 0;
 
+    /**
+     * Soldier constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -41,16 +44,22 @@ class Soldier extends Unit
         return mt_rand(100, 2000);
     }*/
 
+    /**
+     * @return float
+     */
     public function calculateAttackProbability(): float
     {
         $value = 0.5 * (1 + $this->health / 100) * mt_rand(50 + $this->experience, 100) / 100;
-        return $value;
+        return round($value, 2);
     }
 
+    /**
+     * @return float
+     */
     public function calculateDamage(): float
     {
         $value = 0.05 + $this->experience / 100;
-        return $value;
+        return round($value, 2);
     }
 
     /**
@@ -58,6 +67,6 @@ class Soldier extends Unit
      */
     public function receiveDamage(float $damageValue): void
     {
-        $this->health = $this->health - $damageValue;
+        $this->health = $this->health - round($damageValue, 2);
     }
 }

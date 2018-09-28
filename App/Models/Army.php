@@ -6,6 +6,9 @@ use App\Models\Interfaces\CompositeInterface;
 
 class Army extends Unit implements CompositeInterface
 {
+    /**
+     * Chose of battle strategy
+     */
     const BATTLE_STRATEGY = [
         'random',
         'weakest',
@@ -58,17 +61,23 @@ class Army extends Unit implements CompositeInterface
     /**
      * @param int $armyId
      */
-    public function setArmyId(int $armyId)
+    public function setArmyId(int $armyId): void
     {
         $this->armyId = $armyId;
     }
 
-    public function addUnit($unit)
+    /**
+     * @param $unit
+     */
+    public function addUnit($unit): void
     {
         $this->units[] = $unit;
     }
 
-    public function getUnit()
+    /**
+     * @return array
+     */
+    public function getUnit(): array
     {
         return $this->units;
     }
@@ -77,7 +86,7 @@ class Army extends Unit implements CompositeInterface
      * Remove Unit from units[] property
      * @param Unit $unit
      */
-    public function removeUnit(Unit $unit)
+    public function removeUnit(Unit $unit): void
     {
         foreach ($this->units as $key => $composedUnit) {
             if ($composedUnit === $unit) {

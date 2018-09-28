@@ -6,14 +6,23 @@ use Services\ClassFactory\Factory;
 
 class SimulatorController
 {
+    /**
+     * @var Factory
+     */
     private $classFactory;
 
+    /**
+     * SimulatorController constructor.
+     */
     public function __construct()
     {
         $this->classFactory = new Factory;
     }
 
-    public function start()
+    /**
+     * Start the simulation
+     */
+    public function start(): void
     {
         echo PHP_EOL . '+++! Simulation starts here! !+++' . PHP_EOL. PHP_EOL;
 
@@ -24,12 +33,9 @@ class SimulatorController
         $armiesGenerator = $this->classFactory->create('GenerateArmy');
         $armies = $armiesGenerator->generate($listOfArmies);
 
-//        print_r($armies); die();
-
         // Simulate battle
         $simulator = $this->classFactory->create('BattleSimulator');
         $simulator->simulate($armies);
-
     }
 
     /**

@@ -35,14 +35,24 @@ class BattleSimulator
      * If there only one Army unit left it becomes a winner of battle
      * @param array $armies
      */
-    public function simulate(array $armies)
+    public function simulate(array $armies): void
     {
-        echo PHP_EOL . '++! BATTLE starts here! !++' . PHP_EOL. PHP_EOL;
+        /**
+         * Counter of the battle rounds
+         */
+        static $counter = 1;
 
-        if (count($armies) > 1) {
-            $this->startIteration($armies);
+        echo PHP_EOL . '++! BATTLE starts here! Step - ' . $counter++ . ' !++' . PHP_EOL. PHP_EOL;
+
+        $checkedArmies = $this->removeArmyIfHasNoSquads($armies);
+
+        print_r($checkedArmies);
+
+        // Lunch new iterations until only one Army unit left
+        if (count($checkedArmies) > 1) {
+            $this->startIteration($checkedArmies);
         } else {
-            echo $this->determineWiner($armies);
+            echo $this->determineWiner($checkedArmies);
         }
     }
 
@@ -67,6 +77,11 @@ class BattleSimulator
     {
         $rivals = [];
         foreach ($armies as $armyKey => $army) {
+            // Skip the iteration if this Army unit lost its last Squad in previous battle act
+            if (empty($army->getUnit())) {
+                continue;
+            }
+
             // Determine attacking Squad
             $attackingSquad = $army->chooseRandomUnit();
             $rivals['attacker'] = $attackingSquad;
@@ -80,11 +95,15 @@ class BattleSimulator
             $battleMaster = $this->factory->create('BattleMaster');
             $battleMaster->runBattle($rivals);
 
-            print_r($rivals['defender']); die();
-            // Remove defending Squad if it contains no more Units
-
-            break;
+            // Remove defending Squad from Army unit if it contains no more Units
+            $units = $rivals['defender']->getUnits();
+            if (empty($units)) {
+                $this->removeSquadFromArmy($rivals['defender'], $armies);
+            }
         }
+
+        // Run next cycle of the battle simulation
+        $this->simulate($armies);
     }
 
     /**
@@ -127,5 +146,36 @@ class BattleSimulator
 
         return $defendingSquad;
     }
+
+    /**
+     * Remove Squad unit from Army $units property
+     *
+     * @param Squad $squad
+     * @param array $armies
+     */
+    private function removeSquadFromArmy(Squad $squad, array $armies): void
+    {
+        foreach ($armies as $army) {
+            $army->removeUnit($squad);
+        }
+    }
+
+    /**
+     * @param array $armies
+     */
+    private function removeArmyIfHasNoSquads(array $armies): array
+    {
+        foreach ($armies as $key => $army) {
+            $squads = $army->getUnit();
+
+            if (empty($squads)) {
+                unset($armies[$key]);
+            }
+        }
+
+        return $armies;
+    }
+
+
 
 }

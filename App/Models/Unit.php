@@ -6,8 +6,8 @@ use App\Models\Interfaces\UnitInterface;
 
 abstract class Unit implements UnitInterface
 {
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+    /*const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;*/
 
     /**
      * Initial health value of an Unit instance (%)
@@ -31,7 +31,7 @@ abstract class Unit implements UnitInterface
      * Unit activity status
      * @var
      */
-    protected $status;
+//    protected $status;
 
     /**
      * Unit constructor.
@@ -41,7 +41,7 @@ abstract class Unit implements UnitInterface
     public function __construct()
     {
         $this->health = self::INITIAL_HEALTH;
-        $this->status = self::STATUS_ACTIVE;
+//        $this->status = self::STATUS_ACTIVE;
     }
 
     /**
