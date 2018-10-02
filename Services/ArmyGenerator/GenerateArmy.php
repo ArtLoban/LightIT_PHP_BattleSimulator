@@ -6,27 +6,19 @@ use Services\ClassFactory\Units\ArmyFactory;
 
 class GenerateArmy
 {
-    /* Required array structure */
-    /*private $armiesList = [
-        0 => [
-            'strategy' => 'random',
-            'squads' => [
-                0 => ['soldiers' => 7],
-                1 => ['vehicles' => 5],
-                2 => ['vehicles' => 9],
-                3 => ['soldiers' => 10],
-            ],
-        ],
-        1 => [
-            'strategy' => 'weakest',
-            'squads' => [
-                0 => ['soldiers' => 7],
-                1 => ['vehicles' => 5],
-                2 => ['vehicles' => 9],
-                3 => ['soldiers' => 10],
-            ],
-        ],
-    ];*/
+    /**
+     * @var ArmyFactory
+     */
+    private $armyFactory;
+
+    /**
+     * GenerateArmy constructor.
+     * @param ArmyFactory $armyFactory
+     */
+    public function __construct(ArmyFactory $armyFactory)
+    {
+        $this->armyFactory = $armyFactory;
+    }
 
     /**
      * Transform an initial array with list of required armies into
@@ -40,8 +32,7 @@ class GenerateArmy
         $armies = [];
         $armyId = 1;
         foreach ($armiesList as $list) {
-            $army = new ArmyFactory();
-            $armies[] = $army->create($list, $armyId);
+            $armies[] = $this->armyFactory->create($list, $armyId);
             $armyId++;
         }
 

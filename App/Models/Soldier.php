@@ -11,15 +11,6 @@ class Soldier extends Unit
     protected $experience = 0;
 
     /**
-     * Soldier constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-       /* $this->recharge = $this->generateRechargeValue();*/
-    }
-
-    /**
      * @return int
      */
     public function getExperience(): int
@@ -34,15 +25,6 @@ class Soldier extends Unit
     {
         $this->experience = ($this->experience == 50) ? 50 : $this->experience + 1;
     }
-
-    /**
-     * Generates a random value for the recharge property
-     * @return int
-     */
-    /*public function generateRechargeValue(): int
-    {
-        return mt_rand(100, 2000);
-    }*/
 
     /**
      * @return float

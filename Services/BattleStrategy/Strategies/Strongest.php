@@ -1,25 +1,25 @@
 <?php
 
-namespace Services\StrategyChooser;
+namespace Services\BattleStrategy\Strategies;
 
 use App\Models\Squad;
-use Services\BubbleSorter\BubbleSorter;
-use Services\ClassFactory\Factory;
+use Services\BattleStrategy\Contracts\StrategyInterface;
+use Services\Sorter\SquadSorter;
 
-class StrongestPicker implements StrategyChooserInterface
+class Strongest implements StrategyInterface
 {
     /**
-     * @var BubbleSorter
+     * @var SquadSorter
      */
     private $sorter;
 
     /**
-     * StrongestPicker constructor.
+     * Strongest constructor.
+     * @param SquadSorter $squadSorter
      */
-    public function __construct()
+    public function __construct(SquadSorter $squadSorter)
     {
-        $factory = new Factory();
-        $this->sorter = $factory->create('BubbleSorter');
+        $this->sorter = $squadSorter;
     }
 
     /**
@@ -29,11 +29,12 @@ class StrongestPicker implements StrategyChooserInterface
      * @param array $units
      * @return Squad
      */
-    public function choose(array $units): Squad
+    public function get(array $units): Squad
     {
         $units = $this->sorter->sort($units);
         $strongestSquad = array_pop($units);
 
         return $strongestSquad;
     }
+
 }

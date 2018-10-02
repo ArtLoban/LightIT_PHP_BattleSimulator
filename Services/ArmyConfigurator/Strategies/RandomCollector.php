@@ -1,11 +1,11 @@
 <?php
 
-namespace Services\ArmyConfigurator;
+namespace Services\ArmyConfigurator\Strategies;
 
 use App\Models\Army;
 use Services\ArmyConfigurator\Contracts\ConfiguratorInterface;
 
-class RandomConfigurator implements ConfiguratorInterface
+class RandomCollector implements ConfiguratorInterface
 {
     /**
      * TRUE - if needed armies with equal strength
@@ -36,11 +36,11 @@ class RandomConfigurator implements ConfiguratorInterface
         ],
         'SquadsPerArmy' => [
             'min' => 2,
-            'max' => 5
+            'max' => 2
         ],
         'UnitsPerSquad' => [
-            'min' => 5,
-            'max' => 10
+            'min' => 2,
+            'max' => 2
         ]
     ];
 
@@ -67,6 +67,7 @@ class RandomConfigurator implements ConfiguratorInterface
                 'squads' => $this->prepareSquadArray(),
             ];
         }
+
         return $list;
     }
 

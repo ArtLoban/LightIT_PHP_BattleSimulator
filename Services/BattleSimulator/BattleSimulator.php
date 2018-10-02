@@ -3,30 +3,26 @@
 namespace Services\BattleSimulator;
 
 use App\Models\Squad;
-use Services\ClassFactory\Factory;
+use Services\BattleStrategy\StrategyFactory;
 
 class BattleSimulator
 {
     /**
-     * @var array
-     */
-    private $strategies = [
-        'random' => 'RandomPicker',
-        'weakest' => 'WeakestPicker',
-        'strongest' => 'StrongestPicker',
-    ];
-
-    /**
      * @var
      */
-    private $factory;
+    private $battleMaster;
+
+    private $strategyFactory;
 
     /**
      * BattleSimulator constructor.
+     * @param BattleMaster $battleMaster
+     * @param StrategyFactory $strategyBuilderFactory
      */
-    public function __construct()
+    public function __construct(BattleMaster $battleMaster, StrategyFactory $strategyFactory)
     {
-        $this->factory = new Factory();
+        $this->battleMaster = $battleMaster;
+        $this->strategyFactory = $strategyFactory;
     }
 
     /**
@@ -46,7 +42,7 @@ class BattleSimulator
 
         $checkedArmies = $this->removeArmyIfHasNoSquads($armies);
 
-        print_r($checkedArmies);
+//        print_r($checkedArmies);
 
         // Launch new iterations until only one Army unit left
         if (count($checkedArmies) > 1) {
@@ -84,25 +80,22 @@ class BattleSimulator
 
             // Determine attacking Squad
             $attackingSquad = $army->chooseRandomUnit();
-            $rivals['attacker'] = $attackingSquad;
 
             // Determine defending Squad
             $allSquads = $this->mergeAllSquads($armies, $armyKey);
             $defendingSquad = $this->determineDefender($allSquads, $army->getStrategy());
-            $rivals['defender'] = $defendingSquad;
 
             // Determine the winner
-            $battleMaster = $this->factory->create('BattleMaster');
-            $battleMaster->runBattle($rivals);
+            $this->battleMaster->runBattle($attackingSquad, $defendingSquad);
 
             // Remove defending Squad from Army unit if it contains no more Units
-            $units = $rivals['defender']->getUnits();
+            $units = $defendingSquad->getUnits();
             if (empty($units)) {
-                $this->removeSquadFromArmy($rivals['defender'], $armies);
+                $this->removeSquadFromArmy($defendingSquad, $armies);
             }
         }
 
-        // Run next cycle of the battle simulation
+        // Run the next cycle of the battle simulation
         $this->simulate($armies);
     }
 
@@ -136,13 +129,8 @@ class BattleSimulator
      */
     private function determineDefender(array $allSquads, string $strategy): Squad
     {
-        /*if (!array_key_exists($strategy, $this->strategies)) {
-            throw new Exception("Custom Error: there is no $strategy strategy in the given array");
-        }*/
-
-        $className = $this->strategies[$strategy];
-        $strategyChooser = $this->factory->create($className);
-        $defendingSquad = $strategyChooser->choose($allSquads);
+        $strategyGetter = $this->strategyFactory->buildStrategy($strategy);
+        $defendingSquad = $strategyGetter->get($allSquads);
 
         return $defendingSquad;
     }

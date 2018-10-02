@@ -11,24 +11,24 @@ class BattleMaster
      * If attacking Squad unit wins all its members receive experience
      * If defending Squad unit loses it suffers the damage
      *
-     * @param array $rivals
+     * @param Squad $attacker
+     * @param Squad $defender
      */
-    public function runBattle(array $rivals): void
+    public function runBattle(Squad $attacker, Squad $defender): void
     {
-        $attackerProbability = $rivals['attacker']->calculateAttackProbability();
-        $defenderProbability = $rivals['defender']->calculateAttackProbability();
+        $attackerProbability = $attacker->calculateAttackProbability();
+        $defenderProbability = $defender->calculateAttackProbability();
 
         if ($attackerProbability >= $defenderProbability) {
             // Winner receives the experience
-            $this->gainExperience($rivals['attacker']);
+            $this->gainExperience($attacker);
 
             // Loser suffers damage
-            $damage = $rivals['attacker']->calculateDamage();
-
-            $this->receiveDamage($rivals['defender'], $damage);
+            $damage = $attacker->calculateDamage();
+            $this->receiveDamage($defender, $damage);
 
             // Remove composed units from defending Squad unit if they hove no more health
-            $this->dieIfWasted($rivals['defender']);
+            $this->dieIfWasted($defender);
         }
 
         return;
@@ -48,7 +48,8 @@ class BattleMaster
      */
     private function receiveDamage(Squad $squad, float $damage): void
     {
-        foreach ($squad->getUnits() as $unit) {
+        $units = $squad->getUnits();
+        foreach ($units as $unit) {
             $unit->receiveDamage($damage);
         }
     }

@@ -2,21 +2,44 @@
 
 namespace App;
 
-use Services\ClassFactory\Factory;
+use Services\ArmyConfigurator\ConfigureStrategy;
+use Services\ArmyGenerator\GenerateArmy;
+use Services\BattleSimulator\BattleSimulator;
 
 class SimulatorController
 {
     /**
-     * @var Factory
+     * The name of strategy which configurates the list of armies
      */
-    private $classFactory;
+    const LIST_CONFIGURATOR_NAME = 'randomCollector';
+
+    /**
+     * @var GenerateArmy
+     */
+    private $armiesGenerator;
+
+    /**
+     * @var BattleSimulator
+     */
+    private $simulator;
+
+    /**
+     * @var ConfigureStrategy
+     */
+    private $configureStrategy;
 
     /**
      * SimulatorController constructor.
      */
-    public function __construct()
+    public function __construct(
+        GenerateArmy $generateArmy,
+        BattleSimulator $battleSimulator,
+        ConfigureStrategy $configureStrategy
+    )
     {
-        $this->classFactory = new Factory;
+        $this->armiesGenerator = $generateArmy;
+        $this->simulator = $battleSimulator;
+        $this->configureStrategy = $configureStrategy;
     }
 
     /**
@@ -30,12 +53,10 @@ class SimulatorController
         $listOfArmies = $this->getArmyConfiguration();
 
         // Generate armies according to the list
-        $armiesGenerator = $this->classFactory->create('GenerateArmy');
-        $armies = $armiesGenerator->generate($listOfArmies);
+        $armies = $this->armiesGenerator->generate($listOfArmies);
 
         // Simulate battle
-        $simulator = $this->classFactory->create('BattleSimulator');
-        $simulator->simulate($armies);
+        $this->simulator->simulate($armies);
     }
 
     /**
@@ -44,9 +65,10 @@ class SimulatorController
      */
     private function getArmyConfiguration(): array
     {
-        $armiesList = $this->classFactory->create('ConfigureArmiesList');
+        $configurator = $this->configureStrategy->getConfigurator(self::LIST_CONFIGURATOR_NAME);
+        $armiesList = $configurator->getArmiesList();
 
-        return $armiesList->getList();
+        return $armiesList;
     }
 
 }

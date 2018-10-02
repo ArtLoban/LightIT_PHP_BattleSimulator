@@ -9,5 +9,7 @@ ini_set('display_errors', 1);
 /* Composer autoload */
 require __DIR__ . '/vendor/autoload.php';
 
-$simulation = new \App\SimulatorController();
+$factory = new \Services\ClassFactory\Factory();
+
+$simulation = $factory->create(\App\SimulatorController::class);
 $simulation->start();

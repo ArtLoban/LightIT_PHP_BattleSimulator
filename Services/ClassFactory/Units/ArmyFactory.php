@@ -8,17 +8,25 @@ use App\Models\Squad;
 class ArmyFactory
 {
     /**
-     * @var Army
+     * @var SquadFactory
      */
-    private $armyUnit;
+    private $squadFactory;
 
     /**
      * ArmyFactory constructor.
+     * @param SquadFactory $squadFactory
      */
-    public function __construct()
+    public function __construct(SquadFactory $squadFactory)
     {
-        $unitFactory = new UnitFactory;
-        $this->armyUnit = $unitFactory->create('Army');
+        $this->squadFactory = $squadFactory;
+    }
+
+    /**
+     * @return Army
+     */
+    private function getArmy(): Army
+    {
+        return new Army();
     }
 
     /**
@@ -28,26 +36,29 @@ class ArmyFactory
      */
     public function create(array $list, int $id): Army
     {
-        $this->armyUnit->setArmyId($id);
-        $this->armyUnit->setStrategy($list['strategy']);
+        $army = $this->getArmy();
+        $army->setArmyId($id);
+        $army->setStrategy($list['strategy']);
 
-        foreach ($list['squads'] as $squadItem) {
-            $this->armyUnit->addUnit($this->createSquad($squadItem));
+        foreach ($list['squads'] as $key => $squadItem) {
+            $squad = $this->createSquad($squadItem);
+            $army->addUnit($squad);
         }
-        return $this->armyUnit;
+
+        return $army;
     }
 
     /**
      * @param array $squadItem
+     * @param SquadFactory $squadFactory
      * @return Squad
      */
     public function createSquad(array $squadItem): Squad
     {
-        $squad =  new SquadFactory();
-
         foreach ($squadItem as $key => $value) {
-            $squad = $squad->create($key, $value);
+            $squad = $this->squadFactory->create($key, $value);
         }
+
         return $squad;
     }
 

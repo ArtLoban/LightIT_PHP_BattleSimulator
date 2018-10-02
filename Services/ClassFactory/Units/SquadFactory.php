@@ -3,29 +3,39 @@
 namespace Services\ClassFactory\Units;
 
 use App\Models\Squad;
+use Services\ClassFactory\Units\Strategies\SoldierFactory;
+use Services\ClassFactory\Units\Strategies\VehicleFactory;
 
 class SquadFactory
 {
     /**
-     * @var Squad
+     * @var UnitBuildingStrategy
      */
-    private $squad;
+    private $unitStrategy;
 
     /**
      * @var array
      */
     private $squadTypes = [
         'soldiers' => SoldierFactory::class,
-        'vehicles' => VehicleFactory::class,
+        'vehicles' => VehicleFactory::class
     ];
 
     /**
      * SquadFactory constructor.
+     * @param UnitBuildingStrategy $unitStrategy
      */
-    public function __construct()
+    public function __construct(UnitBuildingStrategy $unitStrategy)
     {
-        $unitFactory = new UnitFactory;
-        $this->squad = $unitFactory->create('Squad');
+        $this->unitStrategy = $unitStrategy;
+    }
+
+    /**
+     * @return Squad
+     */
+    private function getSquad(): Squad
+    {
+        return new Squad();
     }
 
     /**
@@ -35,9 +45,10 @@ class SquadFactory
      */
     public function create(string $squadType, int $quantity = 3): Squad
     {
-        $this->squad->addUnit($this->createUnit($squadType, $quantity));
+        $squad = $this->getSquad();
+        $squad->addUnit($this->createUnit($squadType, $quantity));
 
-        return $this->squad;
+        return $squad;
     }
 
     /**
@@ -47,11 +58,7 @@ class SquadFactory
      */
     public function createUnit(string $squadType, int $quantity = 3): array
     {
-        /*if (!array_key_exists($squadType, $this->squadTypes)) {
-            throw new Exception("Custom Error: there is no $squadType squad type in the given array");
-        }*/
-
-        $unitInstance = new $this->squadTypes[$squadType];
+        $unitInstance = $this->unitStrategy->create($squadType);
         $units = $unitInstance->create($quantity);
 
         return $units;

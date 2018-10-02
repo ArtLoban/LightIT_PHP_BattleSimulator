@@ -2,16 +2,23 @@
 
 namespace Services\ClassFactory;
 
+use App\SimulatorController;
 use Exception;
-use Services\ArmyConfigurator\ConfigureArmiesList;
-use Services\ArmyConfigurator\RandomConfigurator;
+use Services\ArmyConfigurator\ConfigureStrategy;
+use Services\ArmyConfigurator\RandomCollector;
 use Services\ArmyGenerator\GenerateArmy;
 use Services\BattleSimulator\BattleMaster;
 use Services\BattleSimulator\BattleSimulator;
-use Services\BubbleSorter\BubbleSorter;
-use Services\StrategyChooser\RandomPicker;
-use Services\StrategyChooser\StrongestPicker;
-use Services\StrategyChooser\WeakestPicker;
+use Services\BattleStrategy\Strategies\Strongest;
+use Services\BattleStrategy\Strategies\Weakest;
+use Services\BattleStrategy\StrategyFactory;
+use Services\ClassFactory\Units\ArmyFactory;
+use Services\ClassFactory\Units\SquadFactory;
+use Services\ClassFactory\Units\Strategies\SoldierFactory;
+use Services\ClassFactory\Units\Strategies\VehicleFactory;
+use Services\ClassFactory\Units\UnitBuildingStrategy;
+use Services\Sorter\SquadSorter;
+use Throwable;
 
 class Factory
 {
@@ -19,16 +26,18 @@ class Factory
      * @var array
      */
     private $classes = [
-        'GenerateArmy' => GenerateArmy::class,
-        'ConfigureArmiesList' => ConfigureArmiesList::class,
-        'RandomConfigurator' => RandomConfigurator::class,
-        'BattleSimulator' => BattleSimulator::class,
-        'RandomPicker' => RandomPicker::class,
-        'WeakestPicker' => WeakestPicker::class,
-        'StrongestPicker' => StrongestPicker::class,
-        'BubbleSorter' => BubbleSorter::class,
-        'BattleMaster' => BattleMaster::class,
-        ];
+        SimulatorController::class => [GenerateArmy::class, BattleSimulator::class, ConfigureStrategy::class],
+        ConfigureStrategy::class => [self::class],
+        GenerateArmy::class => [ArmyFactory::class],
+        ArmyFactory::class => [SquadFactory::class],
+        SquadFactory::class => [UnitBuildingStrategy::class],
+        VehicleFactory::class => [SoldierFactory::class],
+        BattleSimulator::class => [BattleMaster::class, StrategyFactory::class],
+        StrategyFactory::class => [self::class],
+        Weakest::class => [SquadSorter::class],
+        Strongest::class => [SquadSorter::class],
+        UnitBuildingStrategy::class => [self::class],
+    ];
 
     /**
      * @param string $className
@@ -36,13 +45,28 @@ class Factory
      */
     public function create(string $className): object
     {
-        if (!array_key_exists($className, $this->classes)) {
-            throw new Exception("Custom Error: there is no {$className} class name in the given array");
+        return isset($this->classes[$className])
+            ? $this->createClassWithParams($className, $this->classes[$className])
+            : $this->createInstance($className);
+    }
+
+    private function createClassWithParams(string $className, array $params)
+    {
+        $paramsInstances = [];
+        foreach ($params as $paramClassName) {
+            $paramsInstances[] = $this->create($paramClassName);
         }
 
-        $classInstance = new $this->classes[$className];
+        return $this->createInstance($className, $paramsInstances);
+    }
 
-        return $classInstance;
+    private function createInstance(string $className, array $paramsInstances = [])
+    {
+        try {
+            return new $className(... $paramsInstances);
+        } catch (Throwable $exception) {
+            throw new Exception("Custom Error: there is no {$className} class name in the given array");
+        }
     }
 
 }
