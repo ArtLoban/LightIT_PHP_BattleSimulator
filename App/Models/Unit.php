@@ -6,9 +6,6 @@ use App\Models\Interfaces\UnitInterface;
 
 abstract class Unit implements UnitInterface
 {
-    /*const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;*/
-
     /**
      * Initial health value of an Unit instance (%)
      */
@@ -20,18 +17,6 @@ abstract class Unit implements UnitInterface
      * @var float
      */
     protected $health;
-
-    /**
-     * Represents the number of ms required to recharge the unit for an attack (ms)
-     * @var
-     */
-    /*protected $recharge;*/
-
-    /**
-     * Unit activity status
-     * @var
-     */
-//    protected $status;
 
     /**
      * Unit constructor.
@@ -59,14 +44,6 @@ abstract class Unit implements UnitInterface
     {
         $this->health = $health;
     }
-
-    /**
-     * @return mixed
-     */
-    /*public function getRecharge(): int
-    {
-        return $this->recharge;
-    }*/
 
     /**
      * @return mixed

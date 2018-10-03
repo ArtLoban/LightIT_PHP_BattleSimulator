@@ -41,11 +41,15 @@ class SquadFactory
     /**
      * @param string $squadType
      * @param int $quantity
+     * @param int $armyId
+     * @param int $squadId
      * @return Squad
      */
-    public function create(string $squadType, int $quantity = 3): Squad
+    public function create(string $squadType, int $quantity = 3, int $armyId = 1, int $squadId = 1): Squad
     {
         $squad = $this->getSquad();
+        $squad->setArmyId($armyId);
+        $squad->setSquadId($squadId);
         $squad->addUnit($this->createUnit($squadType, $quantity));
 
         return $squad;

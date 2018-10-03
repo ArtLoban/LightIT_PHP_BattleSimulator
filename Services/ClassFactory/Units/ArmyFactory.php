@@ -34,15 +34,17 @@ class ArmyFactory
      * @param int $id
      * @return Army
      */
-    public function create(array $list, int $id): Army
+    public function create(array $list, int $armyId = 1): Army
     {
         $army = $this->getArmy();
-        $army->setArmyId($id);
+        $army->setArmyId($armyId);
         $army->setStrategy($list['strategy']);
 
+        $squadId = 1;
         foreach ($list['squads'] as $key => $squadItem) {
-            $squad = $this->createSquad($squadItem);
+            $squad = $this->createSquad($squadItem, $armyId, $squadId);
             $army->addUnit($squad);
+            $squadId++;
         }
 
         return $army;
@@ -53,10 +55,10 @@ class ArmyFactory
      * @param SquadFactory $squadFactory
      * @return Squad
      */
-    public function createSquad(array $squadItem): Squad
+    public function createSquad(array $squadItem, int $armyId = 1, int $squadId = 1): Squad
     {
         foreach ($squadItem as $key => $value) {
-            $squad = $this->squadFactory->create($key, $value);
+            $squad = $this->squadFactory->create($key, $value, $armyId, $squadId);
         }
 
         return $squad;

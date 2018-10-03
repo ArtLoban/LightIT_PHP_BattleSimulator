@@ -3,9 +3,24 @@
 namespace Services\BattleSimulator;
 
 use App\Models\Squad;
+use Services\BattleLogger\BattleLogger;
 
 class BattleMaster
 {
+
+    /**
+     * @var BattleLogger
+     */
+    private $logger;
+
+    /**
+     * BattleMaster constructor.
+     */
+    public function __construct(BattleLogger $battleLogger)
+    {
+        $this->logger = $battleLogger;
+    }
+
     /**
      * Determine the winner by comparing the attack probabilities
      * If attacking Squad unit wins all its members receive experience
@@ -26,6 +41,7 @@ class BattleMaster
             // Loser suffers damage
             $damage = $attacker->calculateDamage();
             $this->receiveDamage($defender, $damage);
+            $this->writeLogs($attacker, $defender, $damage);
 
             // Remove composed units from defending Squad unit if they hove no more health
             $this->dieIfWasted($defender);
@@ -67,6 +83,27 @@ class BattleMaster
                 $squad->removeUnit($wastedUnit);
             }
         }
+    }
+
+    /**
+     * @param Squad $attacker
+     * @param Squad $defender
+     * @param float $damage
+     */
+    private function writeLogs(Squad $attacker, Squad $defender, float $damage): void
+    {
+        $attackingSquadArmyId = $attacker->getArmyId();
+        $attackingSquadId = $attacker->getSquadId();
+        $defendingSquadArmyId = $defender->getArmyId();
+        $defendingSquadId = $defender->getSquadId();
+
+        $this->logger->logFight(
+            $attackingSquadArmyId,
+            $attackingSquadId,
+            $defendingSquadArmyId,
+            $defendingSquadId,
+            $damage
+        );
     }
 
 }

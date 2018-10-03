@@ -31,16 +31,16 @@ class RandomCollector implements ConfiguratorInterface
      */
     private $armySettings = [
         'NumberOfArmies' => [
-            'min' => 2,
-            'max' => 2
+            'min' => 10,
+            'max' => 10
         ],
         'SquadsPerArmy' => [
             'min' => 2,
-            'max' => 2
+            'max' => 5
         ],
         'UnitsPerSquad' => [
-            'min' => 2,
-            'max' => 2
+            'min' => 5,
+            'max' => 10
         ]
     ];
 

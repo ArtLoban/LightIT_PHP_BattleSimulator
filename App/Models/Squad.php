@@ -13,6 +13,50 @@ class Squad extends Unit implements CompositeInterface
     protected $units = [];
 
     /**
+     * Contain represented army's id
+     * @var
+     */
+    private $armyId;
+
+    /**
+     * Contain represented squad's id
+     * @var
+     */
+    private $squadId;
+
+    /**
+     * @param mixed $armyId
+     */
+    public function setArmyId($armyId): void
+    {
+        $this->armyId = $armyId;
+    }
+
+    /**
+     * @param mixed $squadId
+     */
+    public function setSquadId($squadId): void
+    {
+        $this->squadId = $squadId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getArmyId(): int
+    {
+        return $this->armyId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSquadId(): int
+    {
+        return $this->squadId;
+    }
+
+    /**
      * @param $unit
      */
     public function addUnit($unit): void

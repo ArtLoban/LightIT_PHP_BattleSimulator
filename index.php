@@ -13,3 +13,4 @@ $factory = new \Services\ClassFactory\Factory();
 
 $simulation = $factory->create(\App\SimulatorController::class);
 $simulation->start();
+

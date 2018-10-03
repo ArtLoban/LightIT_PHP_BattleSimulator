@@ -3,6 +3,7 @@
 namespace Services\BattleSimulator;
 
 use App\Models\Squad;
+use Services\BattleLogger\BattleLogger;
 use Services\BattleStrategy\StrategyFactory;
 
 class BattleSimulator
@@ -14,15 +15,18 @@ class BattleSimulator
 
     private $strategyFactory;
 
+    private $logger;
+
     /**
      * BattleSimulator constructor.
      * @param BattleMaster $battleMaster
      * @param StrategyFactory $strategyBuilderFactory
      */
-    public function __construct(BattleMaster $battleMaster, StrategyFactory $strategyFactory)
+    public function __construct(BattleMaster $battleMaster, StrategyFactory $strategyFactory, BattleLogger $battleLogger)
     {
         $this->battleMaster = $battleMaster;
         $this->strategyFactory = $strategyFactory;
+        $this->logger = $battleLogger;
     }
 
     /**
@@ -38,17 +42,15 @@ class BattleSimulator
          */
         static $counter = 1;
 
-        echo PHP_EOL . '++! BATTLE starts here! Step - ' . $counter++ . ' !++' . PHP_EOL. PHP_EOL;
-
         $checkedArmies = $this->removeArmyIfHasNoSquads($armies);
-
-//        print_r($checkedArmies);
 
         // Launch new iterations until only one Army unit left
         if (count($checkedArmies) > 1) {
+            $counter++;
             $this->startIteration($checkedArmies);
         } else {
-            echo $this->determineWiner($checkedArmies);
+            echo PHP_EOL . 'Rounds - ' . $counter . PHP_EOL . PHP_EOL;
+            echo $this->determineWiner($checkedArmies, $counter) . PHP_EOL;
         }
     }
 
@@ -56,11 +58,14 @@ class BattleSimulator
      * @param array $armies
      * @return string
      */
-    private function determineWiner(array $armies): string
+    private function determineWiner(array $armies, int $counter = 1): string
     {
+//        print_r($armies); die();
         $winner = array_shift($armies);
+        $winnerId = $winner->getArmyId();
+        $this->logger->logWinner($winnerId, $counter);
 
-        return '> The Winner is Army-'. $winner->getArmyId() . ' <'. PHP_EOL;
+        return '> The Winner is Army-'. $winnerId . ' <'. PHP_EOL;
     }
 
     /**
@@ -71,7 +76,6 @@ class BattleSimulator
      */
     private function startIteration(array $armies): void
     {
-        $rivals = [];
         foreach ($armies as $armyKey => $army) {
             // Skip the iteration if this Army unit lost its last Squad in previous battle act
             if (empty($army->getUnit())) {
@@ -92,6 +96,7 @@ class BattleSimulator
             $units = $defendingSquad->getUnits();
             if (empty($units)) {
                 $this->removeSquadFromArmy($defendingSquad, $armies);
+                $this->logger->logSquadDestroyed($defendingSquad->getSquadId(), $defendingSquad->getArmyId());
             }
         }
 
@@ -157,6 +162,7 @@ class BattleSimulator
             $squads = $army->getUnit();
 
             if (empty($squads)) {
+                $this->logger->logArmyDestroyed($armies[$key]->getArmyId());
                 unset($armies[$key]);
             }
         }
