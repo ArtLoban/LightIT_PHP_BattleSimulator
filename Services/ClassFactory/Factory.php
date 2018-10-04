@@ -2,6 +2,9 @@
 
 namespace Services\ClassFactory;
 
+use App\Models\Soldier;
+use App\Models\Squad;
+use App\Models\Vehicle;
 use App\SimulatorController;
 use Exception;
 use Services\ArmyConfigurator\ConfigureStrategy;
@@ -12,12 +15,16 @@ use Services\BattleSimulator\BattleSimulator;
 use Services\BattleStrategy\Strategies\Strongest;
 use Services\BattleStrategy\Strategies\Weakest;
 use Services\BattleStrategy\StrategyFactory;
+use Services\Calculator\SoldierCalculator;
+use Services\Calculator\SquadCalculator;
+use Services\Calculator\VehicleCalculator;
 use Services\ClassFactory\Units\ArmyFactory;
 use Services\ClassFactory\Units\SquadFactory;
 use Services\ClassFactory\Units\Strategies\SoldierFactory;
 use Services\ClassFactory\Units\Strategies\VehicleFactory;
 use Services\ClassFactory\Units\UnitBuildingStrategy;
 use Services\ConfigUploader\ConfigUploader;
+use Services\LogWriter\LogWriter;
 use Services\Sorter\SquadSorter;
 use Throwable;
 
@@ -37,14 +44,19 @@ class Factory
         ConfigureStrategy::class => [self::class],
         GenerateArmy::class => [ArmyFactory::class],
         ArmyFactory::class => [SquadFactory::class],
-        SquadFactory::class => [UnitBuildingStrategy::class],
-        VehicleFactory::class => [SoldierFactory::class],
+        SquadFactory::class => [self::class, UnitBuildingStrategy::class],
+        VehicleFactory::class => [self::class, SoldierFactory::class],
         BattleSimulator::class => [BattleMaster::class, StrategyFactory::class, BattleLogger::class],
         StrategyFactory::class => [self::class],
         Weakest::class => [SquadSorter::class],
         Strongest::class => [SquadSorter::class],
         UnitBuildingStrategy::class => [self::class],
         BattleMaster::class => [BattleLogger::class],
+        SoldierFactory::class => [self::class],
+        Soldier::class => [SoldierCalculator::class],
+        Vehicle::class => [VehicleCalculator::class],
+        Squad::class => [SquadCalculator::class],
+        BattleLogger::class => [LogWriter::class],
     ];
 
     /**

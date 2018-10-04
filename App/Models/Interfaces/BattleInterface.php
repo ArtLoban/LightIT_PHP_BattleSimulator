@@ -2,7 +2,7 @@
 
 namespace App\Models\Interfaces;
 
-interface UnitInterface
+interface BattleInterface
 {
     /**
      * @return float
@@ -13,4 +13,10 @@ interface UnitInterface
      * @return float
      */
     public function calculateDamage(): float;
+
+    /**
+     * @param float $value
+     */
+    public function receiveDamage(float $value): void;
+
 }

@@ -7,7 +7,6 @@ use Services\BattleLogger\BattleLogger;
 
 class BattleMaster
 {
-
     /**
      * @var BattleLogger
      */

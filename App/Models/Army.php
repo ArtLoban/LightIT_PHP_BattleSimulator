@@ -2,24 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\CompositeInterface;
 
-class Army extends Unit implements CompositeInterface
+use App\Models\Interfaces\ArmyInterface;
+
+class Army extends CompositeUnit implements ArmyInterface
 {
     /**
-     * Chose of battle strategy
+     * Choice of battle strategy
      */
     const BATTLE_STRATEGY = [
         'random',
         'weakest',
         'strongest'
     ];
-
-    /**
-     * The number of Units $this instance is composed of
-     * @var array
-     */
-    private $units = [];
 
     /**
      * Contain represented army's id
@@ -77,16 +72,16 @@ class Army extends Unit implements CompositeInterface
     /**
      * @return array
      */
-    public function getUnit(): array
+    public function getUnits(): array
     {
         return $this->units;
     }
 
     /**
      * Remove Unit from units[] property
-     * @param Unit $unit
+     * @param $unit
      */
-    public function removeUnit(Unit $unit): void
+    public function removeUnit($unit): void
     {
         foreach ($this->units as $key => $composedUnit) {
             if ($composedUnit === $unit) {
@@ -102,7 +97,7 @@ class Army extends Unit implements CompositeInterface
      */
     public function chechUnits(): bool
     {
-        return (empty($this->units)) ? false : true;
+        return ! empty($this->units);
     }
 
     /**
@@ -115,15 +110,4 @@ class Army extends Unit implements CompositeInterface
 
         return $randomUnit;
     }
-
-    public function calculateAttackProbability(): float
-    {
-        // TODO: Implement makeAttack() method.
-    }
-
-    public function calculateDamage(): float
-    {
-        // TODO: Implement afflictDamage() method.
-    }
-
 }

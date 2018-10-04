@@ -14,11 +14,11 @@ class SquadSorter implements SortInterface
     public function sort(array $allSquads): array
     {
         uasort($allSquads, function (Squad $a, Squad $b) {
-            if ($a->getHealth() === $b->getHealth()) {
+            if ($a->calculateAttackProbability() === $b->calculateAttackProbability()) {
                 return 0;
             }
 
-            return $a->getHealth() > $b->getHealth() ? 1 : -1;
+            return $a->calculateAttackProbability() > $b->calculateAttackProbability() ? 1 : -1;
         });
 
         return $allSquads;

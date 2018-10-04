@@ -52,13 +52,14 @@ class ArmyFactory
 
     /**
      * @param array $squadItem
-     * @param SquadFactory $squadFactory
+     * @param int $armyId
+     * @param int $squadId
      * @return Squad
      */
     public function createSquad(array $squadItem, int $armyId = 1, int $squadId = 1): Squad
     {
-        foreach ($squadItem as $key => $value) {
-            $squad = $this->squadFactory->create($key, $value, $armyId, $squadId);
+        foreach ($squadItem as $squadType => $quantity) {
+            $squad = $this->squadFactory->create($squadType, $quantity, $armyId, $squadId);
         }
 
         return $squad;

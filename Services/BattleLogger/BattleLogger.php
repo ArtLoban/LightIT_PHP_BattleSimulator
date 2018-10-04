@@ -2,43 +2,28 @@
 
 namespace Services\BattleLogger;
 
-
-use Exception;
-use Throwable;
+use Services\LogWriter\LogWriterInterface;
 
 class BattleLogger
 {
     /**
-     * @var string
+     * @var LogWriterInterface
      */
-    private $file = 'battle_logs.log';
+    private $logWriter;
 
     /**
-     * @var bool|resource
+     * @var string
      */
-    private $fileOpen;
+    static private $fileName;
 
     /**
      * BattleLogger constructor.
-     * @param $fileOpen
+     * @param LogWriterInterface $logWriter
      */
-    public function __construct()
+    public function __construct(LogWriterInterface $logWriter)
     {
-        $this->fileOpen = $this->openFile();
+        $this->logWriter =$logWriter;
     }
-
-    /**
-     * @return bool|resource
-     */
-    private function openFile()
-    {
-        try {
-            return fopen($this->file,'a');
-        } catch (Throwable $exception) {
-            throw new Exception("Custom Error: Failed to open stream:");
-        }
-    }
-
 
     /**
      * @param array $listOfArmies
@@ -52,7 +37,16 @@ class BattleLogger
         $data .= '-----' . PHP_EOL;
         $data .= $this->printArmyDitails($listOfArmies);
 
-        fwrite($this->fileOpen, $data);
+        $this->setFileName();
+        $this->logWriter->write(self::$fileName, $data);
+    }
+
+    /**
+     *
+     */
+    private function setFileName():void
+    {
+        self::$fileName = 'storage/logs/battle_logs/' . date('Y_m_d_His') . '.log';
     }
 
     /**
@@ -64,9 +58,7 @@ class BattleLogger
         $data = PHP_EOL . 'Победитель: Army-' . $winnerId . PHP_EOL;
         $data .= 'Количество раундов - ' . $counter . PHP_EOL;
 
-        fwrite($this->fileOpen, $data);
-        fclose($this->fileOpen);
-
+        $this->logWriter->write(self::$fileName, $data);
     }
 
     /**
@@ -88,7 +80,6 @@ class BattleLogger
         }
 
         return $data;
-
     }
 
     /**
@@ -141,7 +132,7 @@ class BattleLogger
         $data = 'Squad-' . $attackingSquadId . '(Army-' . $attackingSquadArmyId . ')' .' наносит ' . $damage . ' урона ' .
             'Squad-' . $defendingSquadId . '(Army-' . $defendingSquadArmyId . ')' . PHP_EOL;
 
-        fwrite($this->fileOpen, $data);
+        $this->logWriter->write(self::$fileName, $data);
     }
 
     /**
@@ -152,7 +143,7 @@ class BattleLogger
     {
         $data = '> Squad-' . $squadId . ' (Army-' . $armyId . ')' . ' уничтожен!' . PHP_EOL;
 
-        fwrite($this->fileOpen, $data);
+        $this->logWriter->write(self::$fileName, $data);
     }
 
     /**
@@ -162,9 +153,6 @@ class BattleLogger
     {
         $data = '>>> Army-' . $armyId . ' уничтожена!' . PHP_EOL;
 
-        fwrite($this->fileOpen, $data);
+        $this->logWriter->write(self::$fileName, $data);
     }
-
-
-
 }

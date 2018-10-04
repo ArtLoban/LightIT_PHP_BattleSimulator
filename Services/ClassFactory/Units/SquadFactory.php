@@ -3,11 +3,17 @@
 namespace Services\ClassFactory\Units;
 
 use App\Models\Squad;
+use Services\ClassFactory\Factory;
 use Services\ClassFactory\Units\Strategies\SoldierFactory;
 use Services\ClassFactory\Units\Strategies\VehicleFactory;
 
 class SquadFactory
 {
+    /**
+     * @var Factory
+     */
+    private $container;
+
     /**
      * @var UnitBuildingStrategy
      */
@@ -23,10 +29,12 @@ class SquadFactory
 
     /**
      * SquadFactory constructor.
+     * @param Factory $container
      * @param UnitBuildingStrategy $unitStrategy
      */
-    public function __construct(UnitBuildingStrategy $unitStrategy)
+    public function __construct(Factory $container, UnitBuildingStrategy $unitStrategy)
     {
+        $this->container = $container;
         $this->unitStrategy = $unitStrategy;
     }
 
@@ -35,7 +43,7 @@ class SquadFactory
      */
     private function getSquad(): Squad
     {
-        return new Squad();
+        return $this->container->create(Squad::class);
     }
 
     /**

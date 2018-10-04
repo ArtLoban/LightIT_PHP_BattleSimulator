@@ -3,6 +3,7 @@
 namespace Services\ClassFactory\Units\Strategies;
 
 use App\Models\Vehicle;
+use Services\ClassFactory\Factory;
 use Services\ClassFactory\Units\Contracts\UnitBuildingStrategyInterface;
 
 class VehicleFactory implements UnitBuildingStrategyInterface
@@ -13,11 +14,18 @@ class VehicleFactory implements UnitBuildingStrategyInterface
     private $soldierFactory;
 
     /**
+     * @var Factory
+     */
+    private $container;
+
+    /**
      * VehicleFactory constructor.
+     * @param Factory $container
      * @param SoldierFactory $soldierFactory
      */
-    public function __construct(SoldierFactory $soldierFactory)
+    public function __construct(Factory $container, SoldierFactory $soldierFactory)
     {
+        $this->container = $container;
         $this->soldierFactory = $soldierFactory;
     }
 
@@ -26,7 +34,7 @@ class VehicleFactory implements UnitBuildingStrategyInterface
      */
     private function getVehicle(): Vehicle
     {
-        return new Vehicle();
+        return $this->container->create(Vehicle::class);
     }
 
     /**

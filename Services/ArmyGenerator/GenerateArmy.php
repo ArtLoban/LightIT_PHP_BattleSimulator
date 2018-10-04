@@ -38,5 +38,4 @@ class GenerateArmy
 
         return $armies;
     }
-
 }

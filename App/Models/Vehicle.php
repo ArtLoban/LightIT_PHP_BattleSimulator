@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\CompositeInterface;
+use App\Models\Interfaces\BattleInterface;
+use App\Models\Interfaces\ExperienceInterface;
+use App\Models\Interfaces\HealthInterface;
+use Services\Calculator\Interfaces\VehicleCalculatorInterface;
 
-class Vehicle extends Unit implements CompositeInterface
+class Vehicle extends CompositeUnit implements ExperienceInterface, BattleInterface, HealthInterface
 {
     /**
      * Part of damage receiving by the vehicle itself - 60%
@@ -27,35 +30,53 @@ class Vehicle extends Unit implements CompositeInterface
     const VEHICLE_OPERATORS = 3;
 
     /**
-     * The number of Units $this instance is composed of.
-     * @var array
+     * Initial health value of this instance (%)
      */
-    protected $units;
+    const INITIAL_HEALTH = 100;
+
+    /**
+     * Represents the health of the unit (%)
+     * @var int
+     */
+    private $health;
+
+    /**
+     * @var VehicleCalculatorInterface
+     */
+    private $calculator;
+
+    /**
+     * Vehicle constructor.
+     * @param VehicleCalculatorInterface $calculator
+     */
+    public function __construct(VehicleCalculatorInterface $calculator)
+    {
+        $this->calculator = $calculator;
+        $this->health = self::INITIAL_HEALTH;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHealth(): float
+    {
+        return $this->health;
+    }
+
+    /**
+     * @param int $health
+     */
+    public function setHealth(int $health): void
+    {
+        $this->health = $health;
+    }
 
     /**
      * @return float
      */
     public function calculateAttackProbability(): float
     {
-        $value = 0.5 * (1 + $this->health / 100) * $this->geometricAverage();
-
-        return round($value, 3);
-    }
-
-    /**
-     * Calculate geometric average of attack probability of all composed Units
-     *
-     * @return float
-     */
-    public function geometricAverage(): float
-    {
-        $mult = 1;
-        foreach ($this->units as $unit) {
-            $mult *= $unit->calculateAttackProbability();
-        }
-        $gavg = pow($mult, 1 / count($this->units));
-
-        return round($gavg, 3);
+        return $this->calculator->getAttackProbability($this->health, $this->units);
     }
 
     /**
@@ -63,13 +84,7 @@ class Vehicle extends Unit implements CompositeInterface
      */
     public function calculateDamage(): float
     {
-        $sumExperience = 0;
-        foreach ($this->units as $unit) {
-            $sumExperience += $unit->getExperience();
-        }
-        $value = 0.1 + ($sumExperience / 100);
-
-        return round($value, 2);
+        return $this->calculator->getDamage($this->units);
     }
 
     /**
@@ -90,9 +105,9 @@ class Vehicle extends Unit implements CompositeInterface
 
     /**
      * Remove Unit from units[] property
-     * @param Unit $unit
+     * @param $unit
      */
-    public function removeUnit(Unit $unit): void
+    public function removeUnit($unit): void
     {
         foreach ($this->units as $key => $composedUnit) {
             if ($composedUnit === $unit) {
@@ -139,9 +154,9 @@ class Vehicle extends Unit implements CompositeInterface
         // Afflict 10% of damage to the each other operator (if present)
         foreach ($this->units as $key => $unit) {
             // except the lucky one who got 20% of damage
-            if ($key == $randomKey) { continue; }
-
-            $unit->receiveDamage($totalDamageValue * self::REST_UNITS_DAMAGE);
+            if ($key !== $randomKey) {
+                $unit->receiveDamage($totalDamageValue * self::REST_UNITS_DAMAGE);
+            }
         }
     }
 
@@ -159,6 +174,4 @@ class Vehicle extends Unit implements CompositeInterface
             }
         }
     }
-
-
 }

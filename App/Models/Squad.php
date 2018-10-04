@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\CompositeInterface;
+use App\Models\Interfaces\ArmyInterface;
+use App\Models\Interfaces\BattleInterface;
+use App\Models\Interfaces\ExperienceInterface;
+use Services\Calculator\Interfaces\SquadCalculatorInterface;
 
-class Squad extends Unit implements CompositeInterface
+class Squad extends CompositeUnit implements ExperienceInterface, BattleInterface, ArmyInterface
 {
-    /**
-     * The number of Units $this instance is composed of
-     * @var array
-     */
-    protected $units = [];
-
     /**
      * Contain represented army's id
      * @var
@@ -25,6 +22,20 @@ class Squad extends Unit implements CompositeInterface
     private $squadId;
 
     /**
+     * @var SquadCalculatorInterface
+     */
+    private $calculator;
+
+    /**
+     * Squad constructor.
+     * @param SquadCalculatorInterface $calculator
+     */
+    public function __construct(SquadCalculatorInterface $calculator)
+    {
+        $this->calculator = $calculator;
+    }
+
+    /**
      * @param mixed $armyId
      */
     public function setArmyId($armyId): void
@@ -33,19 +44,19 @@ class Squad extends Unit implements CompositeInterface
     }
 
     /**
-     * @param mixed $squadId
-     */
-    public function setSquadId($squadId): void
-    {
-        $this->squadId = $squadId;
-    }
-
-    /**
      * @return int
      */
     public function getArmyId(): int
     {
         return $this->armyId;
+    }
+
+    /**
+     * @param mixed $squadId
+     */
+    public function setSquadId($squadId): void
+    {
+        $this->squadId = $squadId;
     }
 
     /**
@@ -73,10 +84,10 @@ class Squad extends Unit implements CompositeInterface
     }
 
     /**
-     * Remove Unit from units[] property
-     * @param Unit $unit
+     * Remove unit from units property
+     * @param $unit
      */
-    public function removeUnit(Unit $unit): void
+    public function removeUnit($unit): void
     {
         foreach ($this->units as $key => $composedUnit) {
             if ($composedUnit === $unit) {
@@ -92,13 +103,7 @@ class Squad extends Unit implements CompositeInterface
      */
     public function calculateAttackProbability(): float
     {
-        $mult = 1;
-        foreach ($this->units as $unit) {
-            $mult *= $unit->calculateAttackProbability();
-        }
-        $value = pow($mult, 1 / count($this->units));
-
-        return round($value, 3);
+        return $this->calculator->getAttackProbability($this->units);
     }
 
     /**
@@ -106,22 +111,7 @@ class Squad extends Unit implements CompositeInterface
      */
     public function calculateDamage(): float
     {
-        $sum = 0;
-        foreach ($this->units as $unit) {
-            $sum += $unit->calculateDamage();
-        }
-
-        return round($sum, 2);
-    }
-
-    /**
-     * Increment the experience of each unit member
-     */
-    public function incrementExperience(): void
-    {
-        foreach ($this->units as $unit) {
-            $unit->incrementExperience();
-        }
+        return $this->calculator->getDamage($this->units);
     }
 
     /**
@@ -139,4 +129,13 @@ class Squad extends Unit implements CompositeInterface
         }
     }
 
+    /**
+     * Increment the experience of each unit member
+     */
+    public function incrementExperience(): void
+    {
+        foreach ($this->units as $unit) {
+            $unit->incrementExperience();
+        }
+    }
 }

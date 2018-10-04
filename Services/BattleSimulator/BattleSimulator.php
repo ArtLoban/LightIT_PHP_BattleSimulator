@@ -13,8 +13,14 @@ class BattleSimulator
      */
     private $battleMaster;
 
+    /**
+     * @var StrategyFactory
+     */
     private $strategyFactory;
 
+    /**
+     * @var BattleLogger
+     */
     private $logger;
 
     /**
@@ -78,7 +84,7 @@ class BattleSimulator
     {
         foreach ($armies as $armyKey => $army) {
             // Skip the iteration if this Army unit lost its last Squad in previous battle act
-            if (empty($army->getUnit())) {
+            if (empty($army->getUnits())) {
                 continue;
             }
 
@@ -92,7 +98,7 @@ class BattleSimulator
             // Determine the winner
             $this->battleMaster->runBattle($attackingSquad, $defendingSquad);
 
-            // Remove defending Squad from Army unit if it contains no more Units
+            // Remove defending Squad from Army unit if it contains no more units
             $units = $defendingSquad->getUnits();
             if (empty($units)) {
                 $this->removeSquadFromArmy($defendingSquad, $armies);
@@ -119,7 +125,7 @@ class BattleSimulator
         // Merge all Squad units of all Armies into one array
         $allSquads = [];
         foreach ($armies as $army) {
-            $allSquads = array_merge($allSquads, $army->getUnit());
+            $allSquads = array_merge($allSquads, $army->getUnits());
         }
 
         return $allSquads;
@@ -155,11 +161,12 @@ class BattleSimulator
 
     /**
      * @param array $armies
+     * @return array
      */
     private function removeArmyIfHasNoSquads(array $armies): array
     {
         foreach ($armies as $key => $army) {
-            $squads = $army->getUnit();
+            $squads = $army->getUnits();
 
             if (empty($squads)) {
                 $this->logger->logArmyDestroyed($armies[$key]->getArmyId());
@@ -169,5 +176,4 @@ class BattleSimulator
 
         return $armies;
     }
-
 }

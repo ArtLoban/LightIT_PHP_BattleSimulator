@@ -3,16 +3,31 @@
 namespace Services\ClassFactory\Units\Strategies;
 
 use App\Models\Soldier;
+use Services\ClassFactory\Factory;
 use Services\ClassFactory\Units\Contracts\UnitBuildingStrategyInterface;
 
 class SoldierFactory implements UnitBuildingStrategyInterface
 {
     /**
+     * @var Factory
+     */
+    private $container;
+
+    /**
+     * SoldierFactory constructor.
+     * @param Factory $container
+     */
+    public function __construct(Factory $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
      * @return Soldier
      */
     private function getSoldier(): Soldier
     {
-        return new Soldier();
+        return $this->container->create(Soldier::class);
     }
 
     /**

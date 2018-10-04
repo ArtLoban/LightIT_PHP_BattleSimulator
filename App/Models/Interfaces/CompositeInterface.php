@@ -2,18 +2,21 @@
 
 namespace App\Models\Interfaces;
 
-use App\Models\Unit;
-
 interface CompositeInterface
 {
     /**
-     * @param $unit
+     * @param object $unit
      */
-    public function addUnit($unit): void;
+    public function addUnit(object $unit): void;
 
     /**
-     * @param Unit $unit
+     * @param object $unit
      */
-    public function removeUnit(Unit $unit): void;
+    public function removeUnit(object $unit): void;
+
+    /**
+     * @return array
+     */
+    public function getUnits(): array;
 
 }
