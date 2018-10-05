@@ -7,7 +7,9 @@ use App\Models\Squad;
 use App\Models\Vehicle;
 use App\SimulatorController;
 use Exception;
-use Services\ArmyConfigurator\ConfigureStrategy;
+use Services\ArmyConfigurator\ArmyConfigurator;
+use Services\ArmyConfigurator\ConfigurationFactory;
+use Services\ArmyConfigurator\Strategies\FromConfigCollector;
 use Services\ArmyGenerator\GenerateArmy;
 use Services\BattleLogger\BattleLogger;
 use Services\BattleSimulator\BattleMaster;
@@ -23,6 +25,7 @@ use Services\ClassFactory\Units\SquadFactory;
 use Services\ClassFactory\Units\Strategies\SoldierFactory;
 use Services\ClassFactory\Units\Strategies\VehicleFactory;
 use Services\ClassFactory\Units\UnitBuildingStrategy;
+use Services\ConfigUploader\ConfigFactory;
 use Services\ConfigUploader\ConfigUploader;
 use Services\LogWriter\LogWriter;
 use Services\Sorter\SquadSorter;
@@ -35,13 +38,11 @@ class Factory
      */
     private $classes = [
         SimulatorController::class => [
+            ArmyConfigurator::class,
             GenerateArmy::class,
             BattleSimulator::class,
-            ConfigUploader::class,
-            ConfigureStrategy::class,
             BattleLogger::class,
         ],
-        ConfigureStrategy::class => [self::class],
         GenerateArmy::class => [ArmyFactory::class],
         ArmyFactory::class => [SquadFactory::class],
         SquadFactory::class => [self::class, UnitBuildingStrategy::class],
@@ -57,6 +58,11 @@ class Factory
         Vehicle::class => [VehicleCalculator::class],
         Squad::class => [SquadCalculator::class],
         BattleLogger::class => [LogWriter::class],
+        ArmyConfigurator::class => [ConfigurationFactory::class],
+        ConfigurationFactory::class => [self::class],
+        ConfigUploader::class => [ConfigFactory::class],
+        ConfigFactory::class => [self::class],
+        FromConfigCollector::class => [ConfigUploader::class]
     ];
 
     /**

@@ -40,9 +40,7 @@ class StrategyFactory
     public function buildStrategy(string $strategy): StrategyInterface
     {
         $className = $this->strategies[$strategy];
-        $strategy = $this->container->create($className);
 
-        return $strategy;
+        return $this->container->create($className);
     }
-
 }

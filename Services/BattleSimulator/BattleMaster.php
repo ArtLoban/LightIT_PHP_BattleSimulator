@@ -76,10 +76,9 @@ class BattleMaster
      */
     private function dieIfWasted(Squad $squad): void
     {
-        foreach ($squad->getUnits() as $key => $unit) {
+        foreach ($squad->getUnits() as $unit) {
             if ($unit->getHealth() <= 0) {
-                $wastedUnit = $squad->getUnits()[$key];
-                $squad->removeUnit($wastedUnit);
+                $squad->removeUnit($unit);
             }
         }
     }
@@ -104,5 +103,4 @@ class BattleMaster
             $damage
         );
     }
-
 }

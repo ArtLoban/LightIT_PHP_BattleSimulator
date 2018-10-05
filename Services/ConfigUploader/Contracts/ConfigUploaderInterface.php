@@ -1,7 +1,6 @@
 <?php
 
-namespace Services\ConfigUploader;
-
+namespace Services\ConfigUploader\Contracts;
 
 interface ConfigUploaderInterface
 {

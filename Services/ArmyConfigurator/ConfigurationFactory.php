@@ -2,11 +2,13 @@
 
 namespace Services\ArmyConfigurator;
 
+
 use Services\ArmyConfigurator\Contracts\ConfiguratorInterface;
+use Services\ArmyConfigurator\Strategies\FromConfigCollector;
 use Services\ArmyConfigurator\Strategies\RandomCollector;
 use Services\ClassFactory\Factory;
 
-class ConfigureStrategy
+class ConfigurationFactory
 {
     /**
      * @var Factory
@@ -18,10 +20,11 @@ class ConfigureStrategy
      */
     private $strategies = [
         'randomCollector' => RandomCollector::class,
+        'fromConfigCollector' => FromConfigCollector::class,
     ];
 
     /**
-     * StrategyFactory constructor.
+     * ConfigurationFactory constructor.
      * @param Factory $container
      */
     public function __construct(Factory $container)
@@ -40,5 +43,6 @@ class ConfigureStrategy
 
         return $chosenStrategy;
     }
+
 
 }

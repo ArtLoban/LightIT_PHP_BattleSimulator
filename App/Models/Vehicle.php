@@ -22,7 +22,7 @@ class Vehicle extends CompositeUnit implements ExperienceInterface, BattleInterf
     /**
      * Part of damage receiving by the rest of operators of the vehicle - 20%
      */
-    const REST_UNITS_DAMAGE = 0.1;
+    const OTHER_UNITS_DAMAGE = 0.1;
 
     /**
      * The number of soldiers required to operate the vehicle
@@ -155,7 +155,7 @@ class Vehicle extends CompositeUnit implements ExperienceInterface, BattleInterf
         foreach ($this->units as $key => $unit) {
             // except the lucky one who got 20% of damage
             if ($key !== $randomKey) {
-                $unit->receiveDamage($totalDamageValue * self::REST_UNITS_DAMAGE);
+                $unit->receiveDamage($totalDamageValue * self::OTHER_UNITS_DAMAGE);
             }
         }
     }
@@ -167,10 +167,9 @@ class Vehicle extends CompositeUnit implements ExperienceInterface, BattleInterf
      */
     private function dieIfWasted(): void
     {
-        foreach ($this->units as $key => $unit) {
+        foreach ($this->units as $unit) {
             if ($unit->getHealth() <= 0) {
-                $wastedUnit = $this->units[$key];
-                $this->removeUnit($wastedUnit);
+                $this->removeUnit($unit);
             }
         }
     }

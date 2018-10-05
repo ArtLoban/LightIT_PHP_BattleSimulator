@@ -2,21 +2,30 @@
 
 namespace Services\ConfigUploader;
 
+use Services\ConfigUploader\Contracts\ConfigUploaderInterface;
 
 class ConfigUploader
 {
     /**
-     * @return array|null
+     * @var ConfigFactory
      */
-    public function getConfigList(): ?array
+    private $factory;
+
+    /**
+     * ConfigUploader constructor.
+     * @param ConfigFactory $factory
+     */
+    public function __construct(ConfigFactory $factory)
     {
-        $jsonConfig = @file_get_contents('battle_config.json');
-
-        if ($jsonConfig === false) {
-            return null;
-        }
-
-        return json_decode($jsonConfig, true);
+        $this->factory = $factory;
     }
 
+    /**
+     * @param $uploader
+     * @return ConfigUploaderInterface
+     */
+    public function getUploader($uploader): ConfigUploaderInterface
+    {
+        return $this->factory->get($uploader);
+    }
 }

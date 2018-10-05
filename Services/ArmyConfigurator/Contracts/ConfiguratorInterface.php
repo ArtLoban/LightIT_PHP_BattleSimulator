@@ -5,7 +5,7 @@ namespace Services\ArmyConfigurator\Contracts;
 interface ConfiguratorInterface
 {
     /**
-     * @return array
+     * @return array|null
      */
-    public function getArmiesList(): array;
+    public function getArmiesList(): ?array;
 }
