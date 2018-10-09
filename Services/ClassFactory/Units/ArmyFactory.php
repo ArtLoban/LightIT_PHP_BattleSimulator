@@ -4,6 +4,8 @@ namespace Services\ClassFactory\Units;
 
 use App\Models\Army;
 use App\Models\Squad;
+use Exception;
+use Throwable;
 
 class ArmyFactory
 {
@@ -38,10 +40,15 @@ class ArmyFactory
     {
         $army = $this->getArmy();
         $army->setArmyId($armyId);
-        $army->setStrategy($list['strategy']);
+
+        try {
+            $army->setStrategy($list['strategy']);
+        } catch (Throwable $exception) {
+            throw new Exception("Custom Error: there is no field \"{$list['strategy']}\" in the given array");
+        }
 
         $squadId = 1;
-        foreach ($list['squads'] as $key => $squadItem) {
+        foreach ($list['squads'] as $squadItem) {
             $squad = $this->createSquad($squadItem, $armyId, $squadId);
             $army->addUnit($squad);
             $squadId++;

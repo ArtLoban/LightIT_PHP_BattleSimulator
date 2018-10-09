@@ -2,7 +2,8 @@
     "autoload": {
         "psr-4": {
              "App\\": "App/",
-             "Services\\": "Services/"
+             "Services\\": "Services/",
+             "Tests\\": "Tests/"
         }
     },
     "require-dev": {
