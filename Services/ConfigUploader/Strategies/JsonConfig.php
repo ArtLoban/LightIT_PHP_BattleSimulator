@@ -18,5 +18,4 @@ class JsonConfig implements ConfigUploaderInterface
 
         return json_decode($data, true);
     }
-
 }

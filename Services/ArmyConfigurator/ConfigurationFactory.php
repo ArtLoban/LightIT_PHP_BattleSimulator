@@ -2,7 +2,6 @@
 
 namespace Services\ArmyConfigurator;
 
-
 use Services\ArmyConfigurator\Contracts\ConfiguratorInterface;
 use Services\ArmyConfigurator\Strategies\FromConfigCollector;
 use Services\ArmyConfigurator\Strategies\RandomCollector;
@@ -43,6 +42,4 @@ class ConfigurationFactory
 
         return $chosenStrategy;
     }
-
-
 }

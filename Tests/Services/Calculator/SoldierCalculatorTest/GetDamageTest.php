@@ -10,12 +10,23 @@ class GetDamageTest extends SoldierCalculatorTest
      * Test getDamage method
      *
      * @covers \Services\Calculator\SoldierCalculatorTest::getDamage()
+     * @dataProvider damageDataProvider
      */
-    public function testGetDamage()
+    public function testGetDamage(int $unitExperience, float $result)
     {
-        $testExperience = 3;
+        $damage = $this->soldierCalculator->getDamage($unitExperience);
+        $this->assertInternalType('float', $damage);
+        $this->assertEquals($result, $damage);
+    }
 
-        $testResult = $this->soldierCalculator->getDamage($testExperience);
-        $this->assertInternalType('float', $testResult);
+    /**
+     * @return array
+     */
+    public function damageDataProvider(): array
+    {
+        return [
+            [0, 0.05],
+            [50, 0.55],
+        ];
     }
 }

@@ -2,10 +2,9 @@
 
 namespace Tests\Services\Calculator;
 
-use App\Models\Soldier;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use Services\Calculator\VehicleCalculator;
+use Services\Tests\UnitsMocker\UnitsMocker;
 
 abstract class VehicleCalculatorTest extends TestCase
 {
@@ -15,9 +14,9 @@ abstract class VehicleCalculatorTest extends TestCase
     public $vehicleCalculator;
 
     /**
-     * @var array
+     * @var UnitsMocker
      */
-    public $testUnits = 0;
+    public $unitsMocker;
 
     /**
      * {@inheritdoc}
@@ -25,23 +24,7 @@ abstract class VehicleCalculatorTest extends TestCase
     public function setUp()
     {
         $this->vehicleCalculator = new VehicleCalculator();
-        $this->testUnits = $this->getMockUnitsArray();
-    }
-
-    /**
-     * Provide an array of Mock units
-     *
-     * @return array
-     */
-    public function getMockUnitsArray(): array
-    {
-        $units = [];
-        $quantity = 3;
-        for ($i = 0; $i < $quantity; $i++) {
-            $units[] = $this->createMock(Soldier::class);
-        }
-
-        return $units;
+        $this->unitsMocker = new UnitsMocker();
     }
 
     /**

@@ -26,6 +26,4 @@ class SoldierCalculator implements SoldierCalculatorInterface
         $value = 0.05 + $experience / 100;
         return round($value, 2);
     }
-
-
 }

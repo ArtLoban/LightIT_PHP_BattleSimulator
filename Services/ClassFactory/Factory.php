@@ -7,6 +7,7 @@ use App\Models\Squad;
 use App\Models\Vehicle;
 use App\SimulatorController;
 use Exception;
+use PHPUnit\Framework\TestCase;
 use Services\ArmyConfigurator\ArmyConfigurator;
 use Services\ArmyConfigurator\ConfigurationFactory;
 use Services\ArmyConfigurator\Strategies\FromConfigCollector;
@@ -62,7 +63,7 @@ class Factory
         ConfigurationFactory::class => [self::class],
         ConfigUploader::class => [ConfigFactory::class],
         ConfigFactory::class => [self::class],
-        FromConfigCollector::class => [ConfigUploader::class]
+        FromConfigCollector::class => [ConfigUploader::class],
     ];
 
     /**

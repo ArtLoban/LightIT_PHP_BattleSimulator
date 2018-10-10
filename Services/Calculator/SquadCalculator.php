@@ -34,5 +34,4 @@ class SquadCalculator implements SquadCalculatorInterface
 
         return round($sum, 2);
     }
-
 }

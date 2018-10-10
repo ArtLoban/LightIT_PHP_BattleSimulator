@@ -10,13 +10,23 @@ class GetAttackProbabilityTest extends SoldierCalculatorTest
      * Test getAttackProbability method
      *
      * @covers \Services\Calculator\SoldierCalculatorTest::getAttackProbability()
+     * @dataProvider attackProbabilityDataProvider
      */
-    public function testGetAttackProbability()
+    public function testGetAttackProbability(float $unitHealth, int $unitExperience, float $result)
     {
-        $testHealth = 3;
-        $testExperience = 3;
+        $attackProbability = $this->soldierCalculator->getAttackProbability($unitHealth, $unitExperience);
+        $this->assertInternalType('float', $attackProbability);
+        $this->assertEquals($result, $attackProbability);
+    }
 
-        $testResult = $this->soldierCalculator->getAttackProbability($testHealth, $testExperience);
-        $this->assertInternalType('float', $testResult);
+    /**
+     * @return array
+     */
+    public function attackProbabilityDataProvider(): array
+    {
+        return [
+            [100, 50, 1.0],
+            [50, 50, 0.75],
+        ];
     }
 }

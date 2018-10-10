@@ -66,7 +66,6 @@ class BattleSimulator
      */
     private function determineWiner(array $armies, int $counter = 1): string
     {
-//        print_r($armies); die();
         $winner = array_shift($armies);
         $winnerId = $winner->getArmyId();
         $this->logger->logWinner($winnerId, $counter);
