@@ -4,7 +4,7 @@ namespace Services\ArmyGenerator;
 
 use Services\ClassFactory\Units\ArmyFactory;
 
-class GenerateArmy
+class ArmyGenerator
 {
     /**
      * @var ArmyFactory
@@ -12,7 +12,7 @@ class GenerateArmy
     private $armyFactory;
 
     /**
-     * GenerateArmy constructor.
+     * ArmyGenerator constructor.
      * @param ArmyFactory $armyFactory
      */
     public function __construct(ArmyFactory $armyFactory)

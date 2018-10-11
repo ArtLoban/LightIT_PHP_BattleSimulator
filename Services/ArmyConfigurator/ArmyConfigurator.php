@@ -35,8 +35,6 @@ class ArmyConfigurator
             $list = $configurator->getArmiesList();
         }
 
-//        print_r($list); die();
-
         return $list;
     }
 }

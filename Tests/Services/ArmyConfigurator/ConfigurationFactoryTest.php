@@ -4,7 +4,6 @@ namespace Tests\Services\ArmyConfigurator;
 
 use PHPUnit\Framework\TestCase;
 use Services\ArmyConfigurator\ConfigurationFactory;
-use Services\ArmyConfigurator\Contracts\ConfiguratorInterface;
 use Services\ArmyConfigurator\Strategies\FromConfigCollector;
 use Services\ArmyConfigurator\Strategies\RandomCollector;
 use Services\ClassFactory\Factory;
@@ -17,14 +16,14 @@ class ConfigurationFactoryTest extends TestCase
      * @covers \Services\ArmyConfigurator\ConfigurationFactory::getConfigurator()
      * @dataProvider configuratorDataProvider
      */
-    public function testGetConfigurator(object $strategyClass, string $strategy)
+    public function testGetConfigurator(object $strategyClass, string $strategy, string $className)
     {
         $mockFactory = $this->mockFactory($strategyClass);
         $configurationFactory = new ConfigurationFactory($mockFactory);
 
         $chosenStrategy = $configurationFactory->getConfigurator($strategy);
         $this->assertInternalType('object', $chosenStrategy);
-        $this->assertInstanceOf(ConfiguratorInterface::class, $chosenStrategy);
+        $this->assertInstanceOf($className, $chosenStrategy);
     }
 
     /**
@@ -33,8 +32,8 @@ class ConfigurationFactoryTest extends TestCase
     public function configuratorDataProvider(): array
     {
         return [
-            [$this->getRandomCollectorMock(), 'randomCollector'],
-            [$this->getFromConfigCollectorMock(), 'fromConfigCollector'],
+            [$this->getRandomCollectorMock(), 'randomCollector', RandomCollector::class],
+            [$this->getFromConfigCollectorMock(), 'fromConfigCollector', FromConfigCollector::class],
         ];
     }
 

@@ -7,11 +7,10 @@ use App\Models\Squad;
 use App\Models\Vehicle;
 use App\SimulatorController;
 use Exception;
-use PHPUnit\Framework\TestCase;
 use Services\ArmyConfigurator\ArmyConfigurator;
 use Services\ArmyConfigurator\ConfigurationFactory;
 use Services\ArmyConfigurator\Strategies\FromConfigCollector;
-use Services\ArmyGenerator\GenerateArmy;
+use Services\ArmyGenerator\ArmyGenerator;
 use Services\BattleLogger\BattleLogger;
 use Services\BattleSimulator\BattleMaster;
 use Services\BattleSimulator\BattleSimulator;
@@ -40,11 +39,11 @@ class Factory
     private $classes = [
         SimulatorController::class => [
             ArmyConfigurator::class,
-            GenerateArmy::class,
+            ArmyGenerator::class,
             BattleSimulator::class,
             BattleLogger::class,
         ],
-        GenerateArmy::class => [ArmyFactory::class],
+        ArmyGenerator::class => [ArmyFactory::class],
         ArmyFactory::class => [SquadFactory::class],
         SquadFactory::class => [self::class, UnitBuildingStrategy::class],
         VehicleFactory::class => [self::class, SoldierFactory::class],
@@ -95,5 +94,4 @@ class Factory
             throw new Exception("Custom Error: there is no {$className} class name in the given array");
         }
     }
-
 }

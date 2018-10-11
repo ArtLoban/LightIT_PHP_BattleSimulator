@@ -36,5 +36,4 @@ class Strongest implements StrategyInterface
 
         return $strongestSquad;
     }
-
 }

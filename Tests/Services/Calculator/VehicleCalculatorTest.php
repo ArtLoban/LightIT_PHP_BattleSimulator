@@ -4,7 +4,7 @@ namespace Tests\Services\Calculator;
 
 use PHPUnit\Framework\TestCase;
 use Services\Calculator\VehicleCalculator;
-use Services\Tests\UnitsMocker\UnitsMocker;
+use Tests\Utilities\UnitsMocker\UnitsMocker;
 
 abstract class VehicleCalculatorTest extends TestCase
 {

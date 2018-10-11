@@ -4,24 +4,25 @@ namespace Tests\Services\ArmyGenerator;
 
 use App\Models\Army;
 use PHPUnit\Framework\TestCase;
-use Services\ArmyGenerator\GenerateArmy;
+use Services\ArmyGenerator\ArmyGenerator;
 use Services\ClassFactory\Units\ArmyFactory;
 
-class GenerateArmyTest extends TestCase
+class ArmyGeneratorTest extends TestCase
 {
     /**
      * Test generate method
      *
-     * @covers \Services\ArmyGenerator\GenerateArmy::generate()
+     * @covers \Services\ArmyGenerator\ArmyGenerator::generate()
      * @dataProvider generateDataProvider
      */
-    public function testGenerate(Army $armyUnit, array $armiesList)
+    public function testGenerate(Army $armyUnit, array $armiesList, int $result)
     {
         $armyFactory = $this->mockArmyFactory($armyUnit);
-        $generateArmy = new GenerateArmy($armyFactory);
+        $armyGenerator = new ArmyGenerator($armyFactory);
+        $armies = $armyGenerator->generate($armiesList);
 
-        $armies = $generateArmy->generate($armiesList);
         $this->assertInternalType('array', $armies);
+        $this->assertCount($result, $armies);
         $this->assertContainsOnlyInstancesOf(Army::class, $armies);
     }
 
@@ -31,7 +32,9 @@ class GenerateArmyTest extends TestCase
     public function generateDataProvider(): array
     {
         return [
-            [$this->getArmyMock(), []]
+            [$this->getArmyMock(), [['army_1'], ['army_2']], 2],
+            [$this->getArmyMock(), [['army_1'], ['army_2'], ['army_3']], 3],
+            [$this->getArmyMock(), [], 0]
         ];
     }
 

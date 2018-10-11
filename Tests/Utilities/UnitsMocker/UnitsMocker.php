@@ -1,13 +1,15 @@
 <?php
 
-namespace Services\Tests\UnitsMocker;
+namespace Tests\Utilities\UnitsMocker;
+
+use PHPUnit\Framework\TestCase;
 
 class UnitsMocker implements UnitsMockerInterface
 {
     /**
      * Provide an array of Mock units
      *
-     * @param object $thisObject
+     * @param TestCase $test
      * @param string $className
      * @param string $methodName
      * @param int $unitsQuantity
@@ -15,7 +17,7 @@ class UnitsMocker implements UnitsMockerInterface
      * @return array
      */
     public function mock(
-        object $thisObject,
+        TestCase $test,
         string $className,
         string $methodName,
         int $unitsQuantity,
@@ -24,7 +26,7 @@ class UnitsMocker implements UnitsMockerInterface
     {
         $units = [];
         for ($i = 0; $i < $unitsQuantity; $i++) {
-            $soldier = $thisObject->getMockBuilder($className)
+            $soldier = $test->getMockBuilder($className)
                 ->disableOriginalConstructor()
                 ->getMock();
             $soldier->method($methodName)->willReturn($returningValue);

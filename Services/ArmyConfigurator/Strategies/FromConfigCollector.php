@@ -43,4 +43,3 @@ class FromConfigCollector implements ConfiguratorInterface
         return isset($data) ? $data : null;
     }
 }
-

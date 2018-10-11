@@ -3,7 +3,7 @@
 namespace App;
 
 use Services\ArmyConfigurator\ArmyConfigurator;
-use Services\ArmyGenerator\GenerateArmy;
+use Services\ArmyGenerator\ArmyGenerator;
 use Services\BattleLogger\BattleLogger;
 use Services\BattleSimulator\BattleSimulator;
 
@@ -15,7 +15,7 @@ class SimulatorController
     private $configurator;
 
     /**
-     * @var GenerateArmy
+     * @var ArmyGenerator
      */
     private $armiesGenerator;
 
@@ -32,13 +32,13 @@ class SimulatorController
     /**
      * SimulatorController constructor.
      * @param ArmyConfigurator $configurator
-     * @param GenerateArmy $generateArmy
+     * @param ArmyGenerator $generateArmy
      * @param BattleSimulator $battleSimulator
      * @param BattleLogger $battleLogger
      */
     public function __construct(
         ArmyConfigurator $configurator,
-        GenerateArmy $generateArmy,
+        ArmyGenerator $generateArmy,
         BattleSimulator $battleSimulator,
         BattleLogger $battleLogger
     )
