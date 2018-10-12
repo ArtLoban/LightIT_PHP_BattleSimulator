@@ -7,6 +7,7 @@ interface LogWriterInterface
     /**
      * @param $fileName
      * @param $data
+     * @return mixed
      */
-    public function write($fileName, $data): void ;
+    public function write(string $fileName, string $data);
 }

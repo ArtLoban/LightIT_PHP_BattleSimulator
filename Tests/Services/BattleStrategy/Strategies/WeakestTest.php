@@ -3,14 +3,14 @@
 namespace Tests\Services\BattleStrategy\Strategies;
 
 use App\Models\Squad;
-use Services\BattleStrategy\Strategies\Strongest;
+use Services\BattleStrategy\Strategies\Weakest;
 
-class StrongestTest extends StrateyAbstract
+class WeakestTest extends StrateyAbstract
 {
     /**
-     * @var Strongest
+     * @var Weakest
      */
-    public $strongest;
+    public $weakest;
 
     /**
      * {@inheritdoc}
@@ -19,20 +19,20 @@ class StrongestTest extends StrateyAbstract
     {
         $this->mockUnits = $this->getMockUnitsArray();
         $mockSquadSorter = $this->mockSquadSorter($this->mockUnits);
-        $this->strongest = new Strongest($mockSquadSorter);
+        $this->weakest = new Weakest($mockSquadSorter);
     }
 
     /**
      * Test get method
      *
-     * @covers \Services\BattleStrategy\Strategies\Strongest::get()
+     * @covers \Services\BattleStrategy\Strategies\Weakest::get()
      */
     public function testGet()
     {
-        $strongestSquad = $this->strongest->get($this->mockUnits);
+        $weakestSquad = $this->weakest->get($this->mockUnits);
 
-        $this->assertInternalType('object', $strongestSquad);
-        $this->assertInstanceOf(Squad::class, $strongestSquad);
+        $this->assertInternalType('object', $weakestSquad);
+        $this->assertInstanceOf(Squad::class, $weakestSquad);
     }
 
     /**
@@ -40,7 +40,7 @@ class StrongestTest extends StrateyAbstract
      */
     public function tearDown()
     {
-        $this->strongest = null;
+        $this->weakest = null;
         gc_collect_cycles();
     }
 }
