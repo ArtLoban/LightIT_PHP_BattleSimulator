@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Services\ArmyConfigurator;
+namespace Tests\Services\ArmyConfigurator\ConfigurationFactoryTest;
 
 use PHPUnit\Framework\TestCase;
 use Services\ArmyConfigurator\ConfigurationFactory;
@@ -8,7 +8,7 @@ use Services\ArmyConfigurator\Strategies\FromConfigCollector;
 use Services\ArmyConfigurator\Strategies\RandomCollector;
 use Services\ClassFactory\Factory;
 
-class ConfigurationFactoryTest extends TestCase
+class GetConfiguratorTest extends TestCase
 {
     /**
      * Test getConfigurator method
@@ -22,6 +22,7 @@ class ConfigurationFactoryTest extends TestCase
         $configurationFactory = new ConfigurationFactory($mockFactory);
 
         $chosenStrategy = $configurationFactory->getConfigurator($strategy);
+
         $this->assertInternalType('object', $chosenStrategy);
         $this->assertInstanceOf($className, $chosenStrategy);
     }
@@ -72,7 +73,6 @@ class ConfigurationFactoryTest extends TestCase
      */
     public function tearDown()
     {
-        $this->generateArmy = null;
         gc_collect_cycles();
     }
 }

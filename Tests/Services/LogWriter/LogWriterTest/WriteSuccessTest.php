@@ -7,7 +7,7 @@ use Tests\Services\LogWriter\LogWriterTest;
 class WriteSuccessTest extends LogWriterTest
 {
     /**
-     *Test write method
+     * Test write method
      *
      * @covers \Services\LogWriter\LogWriter::write()
      * @dataProvider writerDataProvider

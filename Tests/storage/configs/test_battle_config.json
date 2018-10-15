@@ -1,0 +1,44 @@
+[
+  {
+    "strategy": "random",
+    "squads": [
+      {
+        "soldiers": 3
+      },
+      {
+        "vehicles": 3
+      },
+      {
+        "soldiers": 3
+      }
+    ]
+  },
+  {
+    "strategy": "weakest",
+    "squads": [
+      {
+        "soldiers": 3
+      },
+      {
+        "vehicles": 3
+      },
+      {
+        "soldiers": 3
+      }
+    ]
+  },
+  {
+    "strategy": "strongest",
+    "squads": [
+      {
+        "soldiers": 3
+      },
+      {
+        "vehicles": 3
+      },
+      {
+        "soldiers": 3
+      }
+    ]
+  }
+]

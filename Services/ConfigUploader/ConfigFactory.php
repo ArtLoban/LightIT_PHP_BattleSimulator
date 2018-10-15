@@ -2,9 +2,11 @@
 
 namespace Services\ConfigUploader;
 
+use Exception;
 use Services\ClassFactory\Factory;
 use Services\ConfigUploader\Contracts\ConfigUploaderInterface;
 use Services\ConfigUploader\Strategies\JsonConfig;
+use Throwable;
 
 class ConfigFactory
 {
@@ -35,8 +37,13 @@ class ConfigFactory
      */
     public function get(string $strategy): ConfigUploaderInterface
     {
-        $strategyClass = $this->strategies[$strategy];
+        try {
+            $strategyClass = $this->strategies[$strategy];
+        } catch (Throwable $exception) {
+            throw new Exception("Custom Error: there is no {$strategy} strategy name in the given array");
+        }
+        $chosenStrategy = $this->container->create($strategyClass);
 
-        return $this->container->create($strategyClass);
+        return $chosenStrategy;
     }
 }

@@ -21,10 +21,10 @@ class ConfigUploader
     }
 
     /**
-     * @param $uploader
+     * @param string $uploader
      * @return ConfigUploaderInterface
      */
-    public function getUploader($uploader): ConfigUploaderInterface
+    public function getUploader(string $uploader): ConfigUploaderInterface
     {
         return $this->factory->get($uploader);
     }
