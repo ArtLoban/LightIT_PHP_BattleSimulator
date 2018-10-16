@@ -1,5 +1,4 @@
 <?php
-
 /* PHP version 7.0+ */
 
 /* Errors */
@@ -9,8 +8,7 @@ ini_set('display_errors', 1);
 /* Composer autoload */
 require __DIR__ . '/vendor/autoload.php';
 
-$factory = new \Services\ClassFactory\Factory();
+$container = new \Services\ClassFactory\Factory();
 
-$simulation = $factory->create(\App\SimulatorController::class);
+$simulation = $container->create(\App\SimulatorController::class);
 $simulation->start();
-

@@ -42,9 +42,9 @@ class ArmyFactory
         $army->setArmyId($armyId);
 
         try {
-            $army->setStrategy($list['strategy']);
+            @$army->setStrategy($list['strategy']);
         } catch (Throwable $exception) {
-            throw new Exception("Custom Error: there is no field \"{$list['strategy']}\" in the given array");
+            throw new Exception("Custom Error: there is no field \"strategy\" in the given array");
         }
 
         $squadId = 1;
@@ -63,7 +63,7 @@ class ArmyFactory
      * @param int $squadId
      * @return Squad
      */
-    public function createSquad(array $squadItem, int $armyId = 1, int $squadId = 1): Squad
+    private function createSquad(array $squadItem, int $armyId = 1, int $squadId = 1): Squad
     {
         foreach ($squadItem as $squadType => $quantity) {
             $squad = $this->squadFactory->create($squadType, $quantity, $armyId, $squadId);
@@ -71,5 +71,4 @@ class ArmyFactory
 
         return $squad;
     }
-
 }

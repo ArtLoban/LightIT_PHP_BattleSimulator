@@ -23,14 +23,6 @@ class SoldierFactory implements UnitBuildingStrategyInterface
     }
 
     /**
-     * @return Soldier
-     */
-    private function getSoldier(): Soldier
-    {
-        return $this->container->create(Soldier::class);
-    }
-
-    /**
      * Instantiate a number of Soldier objects
      *
      * @param int $quantity
@@ -46,4 +38,11 @@ class SoldierFactory implements UnitBuildingStrategyInterface
         return $instances;
     }
 
+    /**
+     * @return Soldier
+     */
+    private function getSoldier(): Soldier
+    {
+        return $this->container->create(Soldier::class);
+    }
 }

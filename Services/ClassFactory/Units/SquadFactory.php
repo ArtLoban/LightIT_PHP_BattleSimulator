@@ -68,7 +68,7 @@ class SquadFactory
      * @param int $quantity
      * @return array
      */
-    public function createUnit(string $squadType, int $quantity = 3): array
+    private function createUnit(string $squadType, int $quantity = 3): array
     {
         $unitInstance = $this->unitStrategy->create($squadType);
         $units = $unitInstance->create($quantity);

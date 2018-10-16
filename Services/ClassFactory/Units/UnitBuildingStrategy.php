@@ -16,7 +16,6 @@ class UnitBuildingStrategy
      */
     private $container;
 
-
     /**
      * @var array
      */
@@ -43,7 +42,7 @@ class UnitBuildingStrategy
         try {
             return $this->container->create($this->classes[$className]);
         } catch (Throwable $exception) {
-            throw new Exception("Custom Error: there is no {$className} class name in the given array");
+            throw new Exception("Custom Error: there is no \"{$className}\" class name in the given array");
         }
     }
 }

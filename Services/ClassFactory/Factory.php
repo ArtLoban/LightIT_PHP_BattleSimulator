@@ -76,7 +76,13 @@ class Factory
             : $this->createInstance($className);
     }
 
-    private function createClassWithParams(string $className, array $params)
+    /**
+     * @param string $className
+     * @param array $params
+     * @return object
+     * @throws Exception
+     */
+    private function createClassWithParams(string $className, array $params): object
     {
         $paramsInstances = [];
         foreach ($params as $paramClassName) {
@@ -86,12 +92,18 @@ class Factory
         return $this->createInstance($className, $paramsInstances);
     }
 
-    private function createInstance(string $className, array $paramsInstances = [])
+    /**
+     * @param string $className
+     * @param array $paramsInstances
+     * @return object
+     * @throws Exception
+     */
+    private function createInstance(string $className, array $paramsInstances = []): object
     {
         try {
             return new $className(... $paramsInstances);
         } catch (Throwable $exception) {
-            throw new Exception("Custom Error: there is no {$className} class name in the given array");
+            throw new Exception("Custom Error: there is no \"{$className}\" class name in the given array");
         }
     }
 }

@@ -30,6 +30,24 @@ class VehicleFactory implements UnitBuildingStrategyInterface
     }
 
     /**
+     * Instantiate a number of Vehicle objects
+     *
+     * @param int $quantity
+     * @return array
+     */
+    public function create(int $quantity = 3): array
+    {
+        $vehicles = [];
+        for ($i = 0; $i < $quantity; $i++) {
+            $vehicle = $this->getVehicle();
+            $vehicle->addUnit($this->createSoldiers());
+            $vehicles[] = $vehicle;
+        }
+
+        return $vehicles;
+    }
+
+    /**
      * @return Vehicle
      */
     private function getVehicle(): Vehicle
@@ -38,27 +56,9 @@ class VehicleFactory implements UnitBuildingStrategyInterface
     }
 
     /**
-     * Instantiate a number of Vehicle objects
-     *
-     * @param int $quantity
      * @return array
      */
-    public function create(int $quantity = 3): array
-    {
-        $instances = [];
-        for ($i = 0; $i < $quantity; $i++) {
-            $vehicle = $this->getVehicle();
-            $vehicle->addUnit($this->createSoldiers());
-            $instances[] = $vehicle;
-        }
-
-        return $instances;
-    }
-
-    /**
-     * @return array
-     */
-    public function createSoldiers(): array
+    private function createSoldiers(): array
     {
         $factory = $this->soldierFactory;
         $soldiers = $factory->create(Vehicle::VEHICLE_OPERATORS);
