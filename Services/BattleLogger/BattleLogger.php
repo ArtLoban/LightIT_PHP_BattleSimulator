@@ -14,15 +14,15 @@ class BattleLogger
     /**
      * @var string
      */
-    static private $fileName;
+    static private $fileName = '';
 
     /**
-     * BattleLogger constructor.
+     * BattleLoggerTest constructor.
      * @param LogWriterInterface $logWriter
      */
     public function __construct(LogWriterInterface $logWriter)
     {
-        $this->logWriter =$logWriter;
+        $this->logWriter = $logWriter;
     }
 
     /**
@@ -50,10 +50,10 @@ class BattleLogger
     }
 
     /**
-     * @param $winnerId
-     * @param $counter
+     * @param int $winnerId
+     * @param int $counter
      */
-    public function logWinner($winnerId, $counter): void
+    public function logWinner(int $winnerId = 1, int $counter = 1): void
     {
         $data = PHP_EOL . 'Победитель: Army-' . $winnerId . PHP_EOL;
         $data .= 'Количество раундов - ' . $counter . PHP_EOL;
@@ -103,7 +103,7 @@ class BattleLogger
      * @param int $squadId
      * @return string
      */
-    private function printSquad(array $squad, int $squadId): string
+    private function printSquad(array $squad, int $squadId = 1): string
     {
         $string = null;
         foreach ($squad as $name => $quantity) {
@@ -119,14 +119,13 @@ class BattleLogger
      * @param int $defendingSquadArmyId
      * @param int $defendingSquadId
      * @param float $damage
-     * @return string
      */
     public function logFight(
-        int $attackingSquadArmyId,
-        int $attackingSquadId,
-        int $defendingSquadArmyId,
-        int $defendingSquadId,
-        float $damage
+        int $attackingSquadArmyId = 1,
+        int $attackingSquadId = 1,
+        int $defendingSquadArmyId = 1,
+        int $defendingSquadId = 1,
+        float $damage = 1.1
     ): void
     {
         $data = 'Squad-' . $attackingSquadId . '(Army-' . $attackingSquadArmyId . ')' .' наносит ' . $damage . ' урона ' .
@@ -139,7 +138,7 @@ class BattleLogger
      * @param int $squadId
      * @param int $armyId
      */
-    public function logSquadDestroyed(int $squadId, int $armyId): void
+    public function logSquadDestroyed(int $squadId = 1, int $armyId = 1): void
     {
         $data = '> Squad-' . $squadId . ' (Army-' . $armyId . ')' . ' уничтожен!' . PHP_EOL;
 
@@ -149,7 +148,7 @@ class BattleLogger
     /**
      * @param int $armyId
      */
-    public function logArmyDestroyed(int $armyId): void
+    public function logArmyDestroyed(int $armyId = 1): void
     {
         $data = '>>> Army-' . $armyId . ' уничтожена!' . PHP_EOL;
 

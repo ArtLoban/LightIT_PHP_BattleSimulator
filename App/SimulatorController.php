@@ -54,8 +54,6 @@ class SimulatorController
      */
     public function start(): void
     {
-        echo PHP_EOL . '+++! Simulation starts here! !+++' . PHP_EOL. PHP_EOL;
-
         // Receive the list of armies to generate
         $listOfArmies = $this->configurator->getList();
 

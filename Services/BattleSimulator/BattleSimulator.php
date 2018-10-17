@@ -38,7 +38,8 @@ class BattleSimulator
     /**
      * Manage the simulation.
      * If there are more then one Army left, initiate the next battle round.
-     * If there only one Army unit left it becomes a winner of battle
+     * If there only one Army unit left it becomes a winner of the battle
+     *
      * @param array $armies
      */
     public function simulate(array $armies): void
@@ -55,8 +56,8 @@ class BattleSimulator
             $counter++;
             $this->startIteration($checkedArmies);
         } else {
-            echo PHP_EOL . 'Rounds - ' . $counter . PHP_EOL . PHP_EOL;
-            echo $this->determineWiner($checkedArmies, $counter) . PHP_EOL;
+//            echo PHP_EOL . 'Rounds - ' . $counter . PHP_EOL . PHP_EOL;
+            $this->determineWiner($checkedArmies, $counter);
         }
     }
 

@@ -7,8 +7,8 @@ use Exception;
 class LogWriter implements LogWriterInterface
 {
     /**
-     * @param $fileName
-     * @param $data
+     * @param string $fileName
+     * @param string $data
      * @return int
      */
     public function write(string $fileName, string $data): int
