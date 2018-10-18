@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use App\Models\Interfaces\ArmyInterface;
 
 class Army extends CompositeUnit implements ArmyInterface
@@ -18,16 +17,17 @@ class Army extends CompositeUnit implements ArmyInterface
 
     /**
      * Contain represented army's id
-     * @var
+     *
+     * @var int
      */
     private $armyId;
 
     /**
      * The choice of attack strategy per army
-     * @var
+     *
+     * @var string
      */
     private $strategy;
-
 
     /**
      * @param mixed $strategy
@@ -79,6 +79,7 @@ class Army extends CompositeUnit implements ArmyInterface
 
     /**
      * Remove Unit from units[] property
+     *
      * @param $unit
      */
     public function removeUnit($unit): void
@@ -88,16 +89,6 @@ class Army extends CompositeUnit implements ArmyInterface
                 unset($this->units[$key]);
             }
         }
-    }
-
-    /**
-     * Determine if there any Squads composed in current army Instance
-     * Return TRUE - if there is at least one Squad
-     * @return bool
-     */
-    public function chechUnits(): bool
-    {
-        return ! empty($this->units);
     }
 
     /**

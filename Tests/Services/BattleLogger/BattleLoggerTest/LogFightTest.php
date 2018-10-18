@@ -18,8 +18,7 @@ class LogFightTest extends BattleLoggerTest
         int $defendingSquadArmyId,
         int $defendingSquadId,
         float $damage
-    )
-    {
+    ) {
         $this->battleLogger->logFight(
             $attackingSquadArmyId,
             $attackingSquadId,

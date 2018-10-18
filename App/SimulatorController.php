@@ -41,8 +41,7 @@ class SimulatorController
         ArmyGenerator $generateArmy,
         BattleSimulator $battleSimulator,
         BattleLogger $battleLogger
-    )
-    {
+    ) {
         $this->configurator = $configurator;
         $this->armiesGenerator = $generateArmy;
         $this->simulator = $battleSimulator;

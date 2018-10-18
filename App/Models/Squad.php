@@ -11,12 +11,14 @@ class Squad extends CompositeUnit implements ExperienceInterface, BattleInterfac
 {
     /**
      * Contain represented army's id
+     *
      * @var
      */
     private $armyId;
 
     /**
      * Contain represented squad's id
+     *
      * @var
      */
     private $squadId;

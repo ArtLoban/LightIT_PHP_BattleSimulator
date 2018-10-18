@@ -24,8 +24,7 @@ class SimulateTest extends TestCase
         $class_2,
         $method_2,
         array $armies
-    )
-    {
+    ) {
         $mockBattleMaster = $this->mockDependency($class_1, $method_1);
         $mockStrategyFactory = $this->mockDependency($class_2, $method_2);
         $mockBattleLogger = $this->mockBattleLogger();

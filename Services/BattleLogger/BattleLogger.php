@@ -14,7 +14,7 @@ class BattleLogger
     /**
      * @var string
      */
-    static private $fileName = '';
+    private static $fileName = '';
 
     /**
      * BattleLoggerTest constructor.

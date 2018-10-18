@@ -24,6 +24,7 @@ class LogSquadDestroyedTest extends BattleLoggerTest
     {
         return [
             [3, 3],
+            [1, 2],
         ];
     }
 }

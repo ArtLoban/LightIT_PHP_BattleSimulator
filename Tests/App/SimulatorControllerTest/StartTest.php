@@ -26,8 +26,7 @@ class StartTest extends TestCase
         string $method_3,
         string $class_4,
         string $method_4
-    )
-    {
+    ) {
         $mockArmyConfigurator = $this->mockDependency($class_1, $method_1);
         $mockArmyGenerator = $this->mockDependency($class_2, $method_2);
         $mockBattleSimulator = $this->mockDependency($class_3, $method_3);

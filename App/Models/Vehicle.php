@@ -12,17 +12,17 @@ class Vehicle extends CompositeUnit implements ExperienceInterface, BattleInterf
     /**
      * Part of damage receiving by the vehicle itself - 60%
      */
-    const SELF_DAMAGE_VALUE = 0.6;
+    const SELF_DAMAGE_PORTION = 0.6;
 
     /**
      * Part of damage receiving by a random operator unit - 20%
      */
-    const RANDOM_UNIT_DAMAGE = 0.2;
+    const RANDOM_UNIT_DAMAGE_PORTION = 0.2;
 
     /**
-     * Part of damage receiving by the rest of operators of the vehicle - 20%
+     * Part of damage receiving by the rest of operators of the vehicle - 10%
      */
-    const OTHER_UNITS_DAMAGE = 0.1;
+    const OTHER_UNITS_DAMAGE_PORTION = 0.1;
 
     /**
      * The number of soldiers required to operate the vehicle
@@ -72,22 +72,6 @@ class Vehicle extends CompositeUnit implements ExperienceInterface, BattleInterf
     }
 
     /**
-     * @return float
-     */
-    public function calculateAttackProbability(): float
-    {
-        return $this->calculator->getAttackProbability($this->health, $this->units);
-    }
-
-    /**
-     * @return float
-     */
-    public function calculateDamage(): float
-    {
-        return $this->calculator->getDamage($this->units);
-    }
-
-    /**
      * Man a Vehicle instance by 3 Solder instances
      */
     public function addUnit($unit): void
@@ -104,7 +88,24 @@ class Vehicle extends CompositeUnit implements ExperienceInterface, BattleInterf
     }
 
     /**
+     * @return float
+     */
+    public function calculateAttackProbability(): float
+    {
+        return $this->calculator->getAttackProbability($this->health, $this->units);
+    }
+
+    /**
+     * @return float
+     */
+    public function calculateDamage(): float
+    {
+        return $this->calculator->getDamage($this->units);
+    }
+
+    /**
      * Remove Unit from units[] property
+     *
      * @param $unit
      */
     public function removeUnit($unit): void
@@ -131,7 +132,7 @@ class Vehicle extends CompositeUnit implements ExperienceInterface, BattleInterf
      */
     public function receiveDamage(float $totalDamageValue): void
     {
-        $vehicleDamage = $this->health - ($totalDamageValue * self::SELF_DAMAGE_VALUE);
+        $vehicleDamage = $this->health - ($totalDamageValue * self::SELF_DAMAGE_PORTION);
         $this->health = round($vehicleDamage);
         $this->distributeDamage($totalDamageValue);
 
@@ -149,13 +150,13 @@ class Vehicle extends CompositeUnit implements ExperienceInterface, BattleInterf
         // Afflict 20% of damage on a random unit
         $randomKey = array_rand($this->units);
         $randomUnit = $this->units[$randomKey];
-        $randomUnit->receiveDamage($totalDamageValue * self::RANDOM_UNIT_DAMAGE);
+        $randomUnit->receiveDamage($totalDamageValue * self::RANDOM_UNIT_DAMAGE_PORTION);
 
         // Afflict 10% of damage to the each other operator (if present)
         foreach ($this->units as $key => $unit) {
             // except the lucky one who got 20% of damage
             if ($key !== $randomKey) {
-                $unit->receiveDamage($totalDamageValue * self::OTHER_UNITS_DAMAGE);
+                $unit->receiveDamage($totalDamageValue * self::OTHER_UNITS_DAMAGE_PORTION);
             }
         }
     }

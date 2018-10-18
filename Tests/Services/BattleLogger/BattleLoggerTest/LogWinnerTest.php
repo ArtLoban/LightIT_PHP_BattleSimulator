@@ -24,6 +24,7 @@ class LogWinnerTest extends BattleLoggerTest
     {
         return [
             [1, 20],
+            [2, 49],
         ];
     }
 }
